@@ -318,7 +318,8 @@ private:
             long address;
             iss >> address;
             kernelMode = false;
-            memory[PC_ADDR] = memory[address];
+            checkMemoryAccess(address, false);
+            memory[PC_ADDR] = memory[address]; // Jump to address stored at 'address'
             
         } else if (cmd == "SYSCALL") {
             string syscallType;
@@ -334,13 +335,14 @@ private:
                 memory[PC_ADDR]++;
                 
             } else if (syscallType == "HLT") {
-                halted = true;
+                // For OS integration, set a flag and let OS handle it
+                memory[SYSCALL_RESULT_ADDR] = 2; // Indicate HLT was called
+                memory[PC_ADDR]++; // Let OS handle the actual halt
                 
             } else if (syscallType == "YIELD") {
                 // Yield to OS scheduler - will be handled by OS
-                memory[PC_ADDR]++;
-                // Set a flag or store result to indicate yield was called
                 memory[SYSCALL_RESULT_ADDR] = 1; // Indicate YIELD was called
+                memory[PC_ADDR] = 2; // Jump back to OS scheduler entry point (instruction 2)
             }
             
         } else if (cmd == "HLT") {

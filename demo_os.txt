@@ -1,0 +1,150 @@
+# Demo GTU-C312 Operating System - Complete Implementation
+Begin Data Section
+# === CPU Registers (0-20) ===
+0 0     # Program Counter
+1 0     # Stack Pointer  
+2 0     # System call result
+3 0     # Number of instructions executed
+
+# === Thread Table (21-90) ===
+# Each thread: [ID, StartTime, InstrCount, State, PC, SP]
+
+# Thread 0 (OS) - Entry at 21-26
+21 0    # Thread ID
+22 0    # Start time
+23 0    # Instruction count
+24 2    # State (running)
+25 0    # PC
+26 0    # SP
+
+# Thread 1 (Sort) - Entry at 27-32
+27 1    # Thread ID
+28 0    # Start time
+29 0    # Instruction count
+30 1    # State (ready)
+31 10   # PC (starting instruction)
+32 0    # SP
+
+# Thread 2 (Search) - Entry at 33-38
+33 2    # Thread ID
+34 0    # Start time
+35 0    # Instruction count
+36 1    # State (ready)
+37 25   # PC (starting instruction)
+38 0    # SP
+
+# Thread 3 (Factorial) - Entry at 39-44
+39 3    # Thread ID
+40 0    # Start time
+41 0    # Instruction count
+42 1    # State (ready)
+43 35   # PC (starting instruction)
+44 0    # SP
+
+# OS Variables
+200 1   # Current thread ID
+201 0   # System tick
+
+# Thread Data
+1000 3   # Sort: array size
+1001 30  # Sort: arr[0]
+1002 10  # Sort: arr[1]
+1003 20  # Sort: arr[2]
+
+2000 10  # Search: target value
+2001 3   # Search: array size
+2002 30  # Search: arr[0]
+2003 10  # Search: arr[1] (target here)
+2004 20  # Search: arr[2]
+2005 0   # Search: position counter
+2006 -1  # Search: result
+
+3000 4   # Factorial: N=4
+3001 1   # Factorial: result
+3002 1   # Factorial: counter
+
+End Data Section
+
+Begin Instruction Section
+# === OS Kernel ===
+0 SET 1 200     # Current thread = 1
+1 JMP 10        # Jump to sorting thread
+
+# OS Scheduler (called by SYSCALL YIELD)
+2 ADD 201 1     # Increment tick
+3 ADD 200 1     # Next thread
+4 SET 4 202     # Check boundary
+5 SUBI 202 200  # 4 - thread_id
+6 JIF 200 8     # If > 3, reset
+7 JMP 9         # Continue
+8 SET 1 200     # Reset to thread 1
+9 JMP 10        # Dispatch
+
+# === Thread Dispatcher ===
+# This is a simplified dispatcher that jumps based on current thread
+# In real implementation, this would use the thread table
+# For demo purposes, we use direct jumps
+
+# Jump to current thread
+# Thread 1: instructions 10-24 (sorting)
+# Thread 2: instructions 25-34 (search)  
+# Thread 3: instructions 35-44 (factorial)
+
+# === THREAD 1: SORTING ===
+10 SET 1001 202  # Get first element
+11 SET 1002 203  # Get second element
+12 SUBI 202 203  # Compare first - second
+13 JIF 203 16    # If first <= second, no swap
+14 CPY 1002 1001 # Swap: first = second
+15 CPY 202 1002  # Swap: second = original first
+16 SET 1002 202  # Get second element
+17 SET 1003 203  # Get third element
+18 SUBI 202 203  # Compare second - third
+19 JIF 203 22    # If second <= third, no swap
+20 CPY 1003 1002 # Swap: second = third
+21 CPY 202 1003  # Swap: third = original second
+22 SYSCALL PRN 1001 # Print sorted[0]
+23 SYSCALL PRN 1002 # Print sorted[1]
+24 SYSCALL PRN 1003 # Print sorted[2]
+25 SYSCALL YIELD # Yield to next thread
+
+# === THREAD 2: LINEAR SEARCH ===
+26 SET 2002 202  # Get arr[0]
+27 SUBI 202 2000 # Compare with target
+28 JIF 202 31    # If equal, found at position 0
+29 SET 1 2005    # position = 1
+30 JMP 32        # Check next
+31 SET 0 2006    # result = 0 (found at position 0)
+32 SET 2003 202  # Get arr[1]
+33 SUBI 202 2000 # Compare with target
+34 JIF 202 37    # If equal, found at position 1
+35 SET 2 2005    # position = 2
+36 JMP 38        # Check next
+37 CPY 2005 2006 # result = position (found!)
+38 SET 2004 202  # Get arr[2]
+39 SUBI 202 2000 # Compare with target
+40 JIF 202 42    # If equal, found at position 2
+41 JMP 43        # Not found
+42 SET 2 2006    # result = 2 (found at position 2)
+43 SYSCALL PRN 2006 # Print search result
+44 SYSCALL YIELD # Yield to next thread
+
+# === THREAD 3: FACTORIAL ===
+45 JIF 3002 55   # If counter <= 0, done
+46 SET 0 202     # temp = 0 (for multiplication)
+47 CPY 3001 203  # Get current result
+48 JIF 3002 52   # If counter <= 0, done multiplying
+49 ADD 202 203   # temp += result (multiply by addition)
+50 ADD 3002 -1   # counter--
+51 JMP 48        # Continue multiplication
+52 CPY 202 3001  # result = temp
+53 CPY 3000 203  # Get N
+54 SUBI 203 3002 # N - current_counter
+55 ADD 203 1     # Adjust for next iteration
+56 CPY 203 3002  # Update counter
+57 SYSCALL YIELD # Yield
+58 JMP 45        # Continue factorial
+59 SYSCALL PRN 3001 # Print factorial result
+60 SYSCALL HLT   # End
+
+End Instruction Section 
