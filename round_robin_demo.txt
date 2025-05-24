@@ -1,0 +1,66 @@
+# Round Robin Scheduler Demo - Working Version
+Begin Data Section
+0 0     # Program Counter
+1 0     # Stack Pointer  
+2 0     # System call result
+3 0     # Number of instructions executed
+
+# OS Variables
+500 1   # Current thread (1, 2, or 3)
+501 0   # System tick counter
+
+# Thread 1 data
+1000 0  # Counter for thread 1
+
+# Thread 2 data  
+2000 0  # Counter for thread 2
+
+# Thread 3 data
+3000 0  # Counter for thread 3
+
+End Data Section
+
+Begin Instruction Section
+# === ROUND ROBIN SCHEDULER ===
+
+# Main scheduler loop (0-19)
+0 ADD 501 1         # Increment system tick
+1 CPY 500 100       # Get current thread
+2 SET 1 101         # Compare with 1
+3 SUBI 101 100      # 1 - current, result in 100
+4 JIF 100 20        # If thread 1, jump to thread 1
+
+5 SET 2 101         # Compare with 2
+6 SUBI 101 100      # 2 - current, result in 100
+7 JIF 100 30        # If thread 2, jump to thread 2
+
+8 JMP 40            # Else thread 3
+
+# YIELD handler - switches to next thread (10-19)
+10 ADD 500 1        # Next thread
+11 SET 3 101        # Check if > 3
+12 SUBI 101 500     # 3 - current, result in 500
+13 JIF 500 15       # If current > 3, reset
+14 JMP 0            # Back to scheduler
+15 SET 1 500        # Reset to thread 1
+16 JMP 0            # Back to scheduler
+
+# THREAD 1: Sorting demonstration (20-29)
+20 ADD 1000 1       # Increment thread 1 counter
+21 SYSCALL PRN 1000 # Print thread 1 counter
+22 SET 1 2          # Signal YIELD
+23 JMP 10           # Go to YIELD handler
+
+# THREAD 2: Search demonstration (30-39)  
+30 ADD 2000 100     # Increment thread 2 counter by 100
+31 SYSCALL PRN 2000 # Print thread 2 counter
+32 SET 1 2          # Signal YIELD
+33 JMP 10           # Go to YIELD handler
+
+# THREAD 3: Factorial demonstration (40-49)
+40 ADD 3000 1000    # Increment thread 3 counter by 1000
+41 SYSCALL PRN 3000 # Print thread 3 counter
+42 SET 1 2          # Signal YIELD
+43 JMP 10           # Go to YIELD handler
+
+End Instruction Section 

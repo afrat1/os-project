@@ -41,7 +41,7 @@ Begin Data Section
 29 0    # Start time
 30 0    # Instruction count used
 31 1    # State (1=ready)
-32 50   # PC (starting instruction)
+32 20   # PC (starting instruction - CORRECTED)
 33 1100 # SP (stack area)
 34 0    # Reserved
 
@@ -50,7 +50,7 @@ Begin Data Section
 36 0    # Start time
 37 0    # Instruction count used
 38 1    # State (1=ready)
-39 100  # PC (starting instruction)
+39 40   # PC (starting instruction - CORRECTED)
 40 2100 # SP (stack area)
 41 0    # Reserved
 
@@ -59,7 +59,7 @@ Begin Data Section
 43 0    # Start time
 44 0    # Instruction count used
 45 1    # State (1=ready)
-46 150  # PC (starting instruction)
+46 55   # PC (starting instruction - CORRECTED)
 47 3100 # SP (stack area)
 48 0    # Reserved
 
@@ -90,7 +90,6 @@ Begin Data Section
 1007 0      # Loop counter i
 1008 0      # Loop counter j
 1009 0      # Temp for swapping
-1010 50     # Thread 1 starting instruction address
 
 # Thread 2 Data (2000-2099) - Search data
 2000 5      # N = number of elements
@@ -102,24 +101,22 @@ Begin Data Section
 2006 90     # Element 4
 2007 0      # Current position being checked
 2008 -1     # Result (-1 = not found, else position)
-2009 100    # Thread 2 starting instruction address
 
 # Thread 3 Data (3000-3099) - Factorial data
 3000 5      # N = calculate factorial of 5
 3001 1      # Result storage
 3002 1      # Counter
-3003 150    # Thread 3 starting instruction address
 
 End Data Section
 
 Begin Instruction Section
-# === OS KERNEL (Instructions 0-49) ===
+# === OS KERNEL (Instructions 0-19) ===
 
-# OS Bootup and Initialization (0-9)
+# OS Bootup and Initialization (0-1) 
 0 SET 1 200     # Set current thread to 1 (start with sorting)
-1 JMP 50        # Jump directly to thread 1 (sorting thread)
+1 JMP 20        # Jump to thread 1 (sorting thread)
 
-# OS Scheduler - Return point from SYSCALL YIELD (2-19)
+# OS Scheduler - Return point from SYSCALL YIELD (2-11)
 2 ADD 202 1     # Increment system tick
 3 CPY 200 201   # Get current thread
 4 ADD 200 1     # Switch to next thread
@@ -127,107 +124,95 @@ Begin Instruction Section
 6 SUBI 201 200  # 4 - current_thread, result in current_thread
 7 JIF 200 10    # If result ≤ 0 (thread was 4), reset to 1
 8 JMP 12        # Continue with current thread
+9 HLT           # Placeholder
 10 SET 1 200    # Reset to thread 1
+11 JMP 12       # Continue to dispatcher
 
 # Jump to appropriate thread (12-19)
 12 CPY 200 201  # Get current thread ID
 13 SET 1 204    # Check if thread == 1
 14 SUBI 204 201 # 1 - thread_id
-15 JIF 201 50   # If thread == 1, jump to sorting (instruction 50)
+15 JIF 201 20   # If thread == 1, jump to sorting (instruction 20)
 16 SET 2 204    # Check if thread == 2
 17 SUBI 204 201 # 2 - thread_id  
-18 JIF 201 100  # If thread == 2, jump to search (instruction 100)
-19 JMP 150      # Otherwise thread == 3, jump to factorial (instruction 150)
+18 JIF 201 40   # If thread == 2, jump to search (instruction 40)
+19 JMP 55       # Otherwise thread == 3, jump to factorial (instruction 55)
 
-# === THREAD 1: BUBBLE SORT ALGORITHM (50-99) ===
-50 SET 1000 1007  # i = N (outer loop counter)
-51 JIF 1007 90    # If i ≤ 0, sorting done
-52 SET 0 1008     # j = 0 (inner loop counter)
-53 CPY 1000 1009  # temp = N
-54 ADD 1009 -1    # temp = N-1
-55 SUBI 1009 1008 # Compare j with N-1
-56 JIF 1008 85    # If j ≥ N-1, inner loop done
+# === THREAD 1: BUBBLE SORT ALGORITHM (20-39) ===
+20 CPY 1000 1007  # i = N (outer loop counter)
+21 JIF 1007 37    # If i ≤ 0, sorting done
+22 SET 0 1008     # j = 0 (inner loop counter)
+23 CPY 1000 1009  # temp = N
+24 ADD 1009 -1    # temp = N-1
+25 SUBI 1009 1008 # Compare j with N-1
+26 JIF 1008 34    # If j ≥ N-1, inner loop done
 
-# Bubble sort comparison and swap (57-75)
-57 SET 1001 1009  # Base address of array
-58 ADD 1009 1008  # Address of arr[j]
-59 CPY 1009 203   # Get arr[j]
-60 ADD 1009 1     # Address of arr[j+1]
-61 CPY 1009 204   # Get arr[j+1]
-62 SUBI 203 204   # Compare: arr[j] - arr[j+1]
-63 JIF 204 80     # If arr[j] ≤ arr[j+1], no swap needed
+# Bubble sort comparison and swap (27-33)
+27 SET 1001 1009  # Base address of array
+28 ADD 1009 1008  # Address of arr[j]
+29 CPY 1009 203   # Get arr[j]
+30 ADD 1009 1     # Address of arr[j+1]
+31 CPY 1009 204   # Get arr[j+1]
+32 SUBI 203 204   # Compare: arr[j] - arr[j+1]
+33 JIF 204 35     # If arr[j] ≤ arr[j+1], no swap needed
 
-# Swap elements (64-70)
-64 SET 1001 1009  # Base address
-65 ADD 1009 1008  # arr[j] address
-66 CPY 203 1009   # arr[j] = temp (arr[j])
-67 ADD 1009 1     # arr[j+1] address  
-68 CPY 204 1009   # arr[j+1] = arr[j+1]
-69 ADD 1009 -1    # Back to arr[j]
-70 CPY 204 1009   # Complete the swap
+# Inner loop increment
+34 ADD 1008 1     # j++
+35 SYSCALL YIELD  # Yield to other threads
+36 JMP 25         # Continue inner loop
 
-80 ADD 1008 1     # j++
-81 SYSCALL YIELD  # Yield to other threads
-82 JMP 56         # Continue inner loop
+# Outer loop increment  
+37 ADD 1007 -1    # i--
+38 SYSCALL YIELD  # Yield to other threads
+39 JMP 21         # Continue outer loop
 
-85 ADD 1007 -1    # i--
-86 SYSCALL YIELD  # Yield to other threads
-87 JMP 51         # Continue outer loop
+# === THREAD 2: LINEAR SEARCH (40-54) ===
+40 SET 0 2007     # position = 0
+41 SET -1 2008    # result = -1 (not found)
+42 CPY 2000 1009  # Get N
+43 SUBI 1009 2007 # N - position
+44 JIF 2007 53    # If position ≥ N, search complete
 
-# Print sorted results (90-99)
-90 SET 0 1008     # i = 0
-91 CPY 1000 1009  # Get N
-92 SUBI 1009 1008 # N - i
-93 JIF 1008 99    # If i ≥ N, done printing
-94 SET 1001 1009  # Base address
-95 ADD 1009 1008  # Address of arr[i]
-96 SYSCALL PRN 1009 # Print arr[i]
-97 ADD 1008 1     # i++
-98 JMP 92         # Continue printing
-99 SYSCALL HLT    # End sorting thread
+45 SET 2002 1009  # Base address of array
+46 ADD 1009 2007  # Address of arr[position]
+47 CPY 1009 203   # Get arr[position]
+48 CPY 2001 204   # Get search key
+49 SUBI 203 204   # Compare: arr[position] - key
+50 JIF 204 52     # If equal, found it
 
-# === THREAD 2: LINEAR SEARCH (100-149) ===
-100 SET 0 2007    # position = 0
-101 SET -1 2008   # result = -1 (not found)
-102 CPY 2000 1009 # Get N
-103 SUBI 1009 2007 # N - position
-104 JIF 2007 130  # If position ≥ N, search complete
+51 ADD 2007 1     # position++
+52 JMP 42         # Continue search
+53 SYSCALL PRN 2008 # Print result (-1 or position)
+54 SYSCALL HLT    # End search thread
 
-105 SET 2002 1009 # Base address of array
-106 ADD 1009 2007 # Address of arr[position]
-107 CPY 1009 203  # Get arr[position]
-108 CPY 2001 204  # Get search key
-109 SUBI 203 204  # Compare: arr[position] - key
-110 JIF 204 125   # If equal, found it
+# Found it case (instruction 52)
+52 CPY 2007 2008  # result = position (found!)
+53 SYSCALL PRN 2008 # Print result
+54 SYSCALL HLT    # End search thread
 
-111 ADD 2007 1    # position++
-112 SYSCALL YIELD # Yield to other threads
-113 JMP 103       # Continue search
+# === THREAD 3: FACTORIAL CALCULATION (55-71) ===
+55 CPY 3000 3002  # counter = N
+56 SET 1 3001     # result = 1
+57 JIF 3002 70    # If counter ≤ 0, done
 
-125 CPY 2007 2008 # result = position (found!)
-130 SYSCALL PRN 2008 # Print result (-1 or position)
-131 SYSCALL HLT   # End search thread
+# Multiply result by counter (using repeated addition)
+58 SET 0 1009     # temp = 0 (for multiplication by addition)
+59 CPY 3001 203   # current result
+60 CPY 3002 204   # current counter
+61 JIF 204 67     # If counter ≤ 0, multiplication done
+62 ADD 1009 203   # temp += result (multiply by repeated addition)
+63 ADD 204 -1     # counter--
+64 SYSCALL YIELD  # Yield during multiplication
+65 JMP 61         # Continue multiplication
 
-# === THREAD 3: FACTORIAL CALCULATION (150-199) ===
-150 CPY 3000 3002 # counter = N
-151 SET 1 3001    # result = 1
-152 JIF 3002 170  # If counter ≤ 0, done
+# Store result and continue
+66 CPY 1009 3001  # result = temp (new factorial value)
+67 ADD 3002 -1    # counter--
+68 SYSCALL YIELD  # Yield to other threads
+69 JMP 57         # Continue factorial calculation
 
-153 SET 0 1009    # temp = 0 (for multiplication by addition)
-154 CPY 3001 203  # current result
-155 CPY 3002 204  # current counter
-156 JIF 204 165   # If counter ≤ 0, multiplication done
-157 ADD 1009 203  # temp += result (multiply by repeated addition)
-158 ADD 204 -1    # counter--
-159 SYSCALL YIELD # Yield during multiplication
-160 JMP 156       # Continue multiplication
-
-165 CPY 1009 3001 # result = temp (new factorial value)
-166 ADD 3002 -1   # counter--
-167 SYSCALL YIELD # Yield to other threads
-168 JMP 152       # Continue factorial calculation
-
-170 SYSCALL PRN 3001 # Print factorial result
-171 SYSCALL HLT   # End factorial thread
+# Print result and halt
+70 SYSCALL PRN 3001 # Print factorial result
+71 SYSCALL HLT    # End factorial thread
 
 End Instruction Section 

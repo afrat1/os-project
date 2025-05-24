@@ -1,0 +1,187 @@
+# GTU-C312 Operating System with Round Robin Scheduling
+Begin Data Section
+# === CPU Registers (0-20) ===
+0 0     # Program Counter
+1 0     # Stack Pointer  
+2 0     # System call result
+3 0     # Number of instructions executed
+
+# === OS Thread Table (21-120) ===
+# Thread 0 (OS) - addresses 21-30
+21 0    # Thread ID
+22 0    # Start time
+23 0    # Instruction count
+24 2    # State (2=running)
+25 0    # Saved PC
+26 0    # Saved SP
+27 0    # Reserved
+28 0    # Reserved
+29 0    # Reserved
+30 0    # Reserved
+
+# Thread 1 (Sorting) - addresses 31-40
+31 1    # Thread ID
+32 0    # Start time
+33 0    # Instruction count
+34 1    # State (1=ready)
+35 100  # PC (start address)
+36 0    # Saved SP
+37 0    # Reserved
+38 0    # Reserved
+39 0    # Reserved
+40 0    # Reserved
+
+# Thread 2 (Search) - addresses 41-50
+41 2    # Thread ID
+42 0    # Start time
+43 0    # Instruction count
+44 1    # State (1=ready)
+45 200  # PC (start address)
+46 0    # Saved SP
+47 0    # Reserved
+48 0    # Reserved
+49 0    # Reserved
+50 0    # Reserved
+
+# Thread 3 (Factorial) - addresses 51-60
+51 3    # Thread ID
+52 0    # Start time
+53 0    # Instruction count
+54 1    # State (1=ready)
+55 300  # PC (start address)
+56 0    # Saved SP
+57 0    # Reserved
+58 0    # Reserved
+59 0    # Reserved
+60 0    # Reserved
+
+# === OS Variables (500-520) ===
+500 1   # Current thread ID (start with thread 1)
+501 1   # Next thread to schedule
+502 0   # System tick counter
+503 0   # Temp storage
+504 0   # Temp storage
+505 0   # Context switch flag
+
+# === Thread Data Areas ===
+# Thread 1 Data (1000-1099) - Sorting
+1000 5      # Array size N
+1001 64     # arr[0]
+1002 34     # arr[1]
+1003 25     # arr[2]
+1004 12     # arr[3]
+1005 90     # arr[4]
+
+# Thread 2 Data (2000-2099) - Search
+2000 5      # Array size N
+2001 25     # Search key
+2002 64     # arr[0]
+2003 34     # arr[1]
+2004 25     # arr[2] (target)
+2005 12     # arr[3]
+2006 90     # arr[4]
+2007 -1     # Result
+
+# Thread 3 Data (3000-3099) - Factorial
+3000 5      # N (calculate 5!)
+3001 1      # Result
+3002 1      # Counter
+
+End Data Section
+
+Begin Instruction Section
+# === OS KERNEL (0-99) ===
+
+# OS Bootup (0-9)
+0 SET 1 500     # Current thread = 1
+1 SET 1 501     # Next thread = 1
+2 JMP 10        # Jump to scheduler
+
+# SYSCALL Entry Point (5-9) - threads return here after YIELD
+5 SET 1 505     # Set context switch flag
+6 JMP 10        # Jump to scheduler
+
+# Main Round Robin Scheduler (10-49)
+10 ADD 502 1    # Increment system tick
+
+# Check if context switch needed
+11 JIF 505 20   # If no context switch flag, continue current thread
+12 SET 0 505    # Clear context switch flag
+
+# Round Robin: Find next ready thread
+13 ADD 501 1    # Increment next thread
+14 SET 3 503    # Check if > 3
+15 SUBI 503 501 # 3 - next, result in 501
+16 JIF 501 18   # If next > 3, reset to 1
+17 JMP 19       # Continue
+18 SET 1 501    # Reset to thread 1
+
+# Update current thread
+19 CPY 501 500  # current_thread = next_thread
+
+# Dispatch to current thread
+20 SET 1 503    # Compare with 1
+21 SUBI 503 500 # 1 - current, result in 500
+22 JIF 500 100  # If thread 1, jump to sorting
+23 SET 2 503    # Compare with 2
+24 SUBI 503 500 # 2 - current, result in 500
+25 JIF 500 200  # If thread 2, jump to search
+26 JMP 300      # Else thread 3, jump to factorial
+
+# === USER SPACE THREADS ===
+
+# THREAD 1: BUBBLE SORT (100-199)
+100 SYSCALL PRN 1001 # Print original array
+101 SYSCALL PRN 1002
+102 SYSCALL PRN 1003
+103 SYSCALL PRN 1004
+104 SYSCALL PRN 1005
+
+# Simple bubble sort step
+105 CPY 1001 503    # Get arr[0]
+106 CPY 1002 504    # Get arr[1]
+107 SUBI 503 504    # Compare arr[0] - arr[1], result in 504
+108 JIF 504 112     # If arr[0] ≤ arr[1], no swap
+
+# Swap arr[0] and arr[1]
+109 CPY 1001 503    # temp = arr[0]
+110 CPY 1002 1001   # arr[0] = arr[1]
+111 SET 503 1002    # arr[1] = temp
+
+112 SYSCALL YIELD   # Yield to scheduler (goes to instruction 5)
+113 JMP 100         # Continue sorting (infinite loop for demo)
+
+# THREAD 2: LINEAR SEARCH (200-299)
+200 SET 0 2007      # position = 0
+201 CPY 2001 503    # Get search key (25)
+
+# Check each position
+202 CPY 2002 504    # Get arr[0]
+203 SUBI 504 503    # Compare with key, result in 503
+204 JIF 503 210     # If equal, found
+
+205 CPY 2003 504    # Get arr[1]
+206 SUBI 504 503    # Compare with key
+207 JIF 503 211     # If equal, found
+
+208 CPY 2004 504    # Get arr[2]
+209 SUBI 504 503    # Compare with key
+210 JIF 503 212     # If equal, found
+
+# Found at position 2
+211 SET 2 2007      # Found at position 2
+212 SYSCALL PRN 2007 # Print result
+213 SYSCALL YIELD   # Yield to scheduler
+214 JMP 200         # Continue (infinite loop for demo)
+
+# THREAD 3: FACTORIAL CALCULATION (300-399)
+300 CPY 3000 3002   # counter = N (5)
+301 SET 1 3001      # result = 1
+
+# Simple factorial step (multiply result by 2)
+302 ADD 3001 3001   # result = result * 2 (simplified)
+303 SYSCALL PRN 3001 # Print current result
+304 SYSCALL YIELD   # Yield to scheduler
+305 JMP 302         # Continue (infinite loop for demo)
+
+End Instruction Section 

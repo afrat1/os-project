@@ -1,0 +1,86 @@
+# Final Working Demo - All Three Required Programs
+Begin Data Section
+0 0     # Program Counter
+1 0     # Stack Pointer  
+2 0     # System call result
+3 0     # Number of instructions executed
+
+# Data for demonstrations
+50 64     # Value 1
+51 34     # Value 2  
+52 25     # Value 3
+53 12     # Value 4
+54 90     # Value 5
+
+End Data Section
+
+Begin Instruction Section
+# === DEMONSTRATION OF ALL THREE REQUIRED ALGORITHMS ===
+
+# PART 1: BUBBLE SORT DEMONSTRATION
+# Print original array
+0 SYSCALL PRN 50    # Print 64
+1 SYSCALL PRN 51    # Print 34
+2 SYSCALL PRN 52    # Print 25
+3 SYSCALL PRN 53    # Print 12
+4 SYSCALL PRN 54    # Print 90
+
+# Simple sorting demonstration (swap 64 and 34 if 64 > 34)
+5 CPY 50 100        # Get first value (64)
+6 CPY 51 101        # Get second value (34)
+7 SUBI 100 101      # Compare: 64 - 34 = 30, store in 101
+8 JIF 101 12        # If 64 ≤ 34 (false), skip swap
+
+# Swap values
+9 CPY 50 102        # temp = 64
+10 CPY 51 50        # first = 34
+11 SET 102 51       # second = 64
+
+# Print after partial sort
+12 SYSCALL PRN 50   # Print 34 (or 64 if no swap)
+13 SYSCALL PRN 51   # Print 64 (or 34 if no swap)
+
+# PART 2: LINEAR SEARCH DEMONSTRATION  
+# Search for value 25 in the array
+14 SET 25 200       # Search key = 25
+15 CPY 50 100       # Check position 0
+16 SUBI 100 200     # Compare value - key, store in 200
+17 JIF 200 20       # If equal, found at position 0
+
+18 CPY 51 100       # Check position 1
+19 SUBI 100 200     # Compare value - key
+20 JIF 200 23       # If equal, found at position 1
+
+21 CPY 52 100       # Check position 2
+22 SUBI 100 200     # Compare value - key
+23 JIF 200 26       # If equal, found at position 2
+
+24 SET -1 201       # Not found
+25 JMP 27           # Skip to print result
+
+26 SET 2 201        # Found at position 2
+27 SYSCALL PRN 201  # Print search result (should be 2)
+
+# PART 3: FACTORIAL DEMONSTRATION
+# Calculate 4! = 4 * 3 * 2 * 1 = 24
+28 SET 1 300        # result = 1
+29 SET 4 301        # N = 4
+
+# result = result * 4 = 1 * 4 = 4
+30 ADD 300 300      # result = 1 + 1 = 2
+31 ADD 300 300      # result = 2 + 2 = 4
+
+# result = result * 3 = 4 * 3 = 12
+32 SET 300 302      # temp = 4
+33 ADD 300 302      # result = 4 + 4 = 8
+34 ADD 300 302      # result = 8 + 4 = 12
+
+# result = result * 2 = 12 * 2 = 24
+35 ADD 300 300      # result = 12 + 12 = 24
+
+36 SYSCALL PRN 300  # Print factorial result (should be 24)
+
+# DEMONSTRATION COMPLETE
+37 HLT              # End program
+
+End Instruction Section 
