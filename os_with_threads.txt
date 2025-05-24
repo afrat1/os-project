@@ -1,0 +1,169 @@
+# GTU-C312 Operating System with Threads
+# This file contains the complete OS and thread programs
+
+Begin Data Section
+# === CPU Registers (0-20) ===
+0 0     # Program Counter
+1 0     # Stack Pointer  
+2 0     # System call result
+3 0     # Number of instructions executed
+4 0     # Reserved
+5 0     # Reserved
+6 0     # Reserved
+7 0     # Reserved
+8 0     # Reserved
+9 0     # Reserved
+10 0    # Reserved
+11 0    # Reserved
+12 0    # Reserved
+13 0    # Reserved
+14 0    # Reserved
+15 0    # Reserved
+16 0    # Reserved
+17 0    # Reserved
+18 0    # Reserved
+19 0    # Reserved
+20 0    # Reserved
+
+# === OS Data Area (21-999) ===
+# Thread Table Structure (10 threads * 10 words each = 100 words)
+# Each thread entry: [ID, StartTime, InstrCount, State, PC, SP, Reserved1-4]
+
+# Thread 0 (OS itself)
+21 0    # Thread ID
+22 0    # Start time
+23 0    # Instruction count used
+24 1    # State (0=inactive, 1=ready, 2=running, 3=blocked)
+25 0    # Saved PC
+26 0    # Saved SP
+27 0    # Reserved
+28 0    # Reserved  
+29 0    # Reserved
+30 0    # Reserved
+
+# Thread 1 (Sorting Thread - starts at address 1000)
+31 1    # Thread ID
+32 0    # Start time
+33 0    # Instruction count used
+34 1    # State (ready)
+35 1000 # PC (starting address)
+36 1100 # SP (stack area)
+37 0    # Reserved
+38 0    # Reserved
+39 0    # Reserved
+40 0    # Reserved
+
+# Thread 2 (Search Thread - starts at address 2000)
+41 2    # Thread ID
+42 0    # Start time
+43 0    # Instruction count used
+44 1    # State (ready)
+45 2000 # PC (starting address)
+46 2100 # SP (stack area)
+47 0    # Reserved
+48 0    # Reserved
+49 0    # Reserved
+50 0    # Reserved
+
+# Thread 3 (Custom Thread - starts at address 3000)
+51 3    # Thread ID
+52 0    # Start time
+53 0    # Instruction count used
+54 1    # State (ready)
+55 3000 # PC (starting address)
+56 3100 # SP (stack area)
+57 0    # Reserved
+58 0    # Reserved
+59 0    # Reserved
+60 0    # Reserved
+
+# Threads 4-9 (inactive for now)
+61 4    # Thread ID
+62 0    # Start time
+63 0    # Instruction count used
+64 0    # State (inactive)
+65 0    # PC
+66 0    # SP
+67 0    # Reserved
+68 0    # Reserved
+69 0    # Reserved
+70 0    # Reserved
+
+# ... (repeat for threads 5-9, addresses 71-120)
+
+# OS Variables
+200 0   # Current thread ID
+201 0   # Scheduler counter
+202 0   # System tick counter
+
+# === Thread Data Areas ===
+# Thread 1 Data (1000-1099) - Sorting data
+1000 5      # N = number of elements to sort
+1001 64     # Element 1
+1002 34     # Element 2  
+1003 25     # Element 3
+1004 12     # Element 4
+1005 90     # Element 5
+1006 0      # Temp storage for sorting
+1007 0      # Loop counter i
+1008 0      # Loop counter j
+1009 0      # Temp for swapping
+
+# Thread 2 Data (2000-2099) - Search data
+2000 5      # N = number of elements
+2001 25     # Search key
+2002 64     # Element 1
+2003 34     # Element 2
+2004 25     # Element 3 (this should be found at position 2, 0-indexed)
+2005 12     # Element 4
+2006 90     # Element 5
+2007 0      # Current position being checked
+2008 -1     # Result (-1 = not found, else position)
+
+# Thread 3 Data (3000-3099) - Custom program data  
+3000 10     # N = calculate factorial of 10
+3001 1      # Result storage
+3002 1      # Counter
+
+End Data Section
+
+Begin Instruction Section
+# === OS KERNEL (Instructions 0-999) ===
+
+# OS Bootup and Initialization (0-19)
+0 SET 21 200    # Set current thread to 0 (OS)
+1 SET 0 201     # Initialize scheduler counter
+2 SET 0 202     # Initialize system tick counter
+
+# OS Main Scheduler Loop (20-99)  
+20 ADD 202 1    # Increment system tick
+21 SYSCALL YIELD # This will be implemented to switch threads
+22 JMP 20       # Loop back to scheduler
+
+# System Call Handlers (100-199)
+100 HLT         # SYSCALL HLT handler (placeholder)
+101 HLT         # SYSCALL YIELD handler (placeholder)  
+102 HLT         # SYSCALL PRN handler (placeholder)
+
+# Context Switch Implementation (200-299)
+200 HLT         # Context switch code (placeholder)
+
+# === THREAD 1: SORTING ALGORITHM (1000-1999) ===
+1000 SET 1000 1007  # i = N
+1001 SET 0 1008     # j = 0  
+1002 SYSCALL YIELD  # Yield to other threads
+1003 HLT            # Placeholder - will implement bubble sort
+
+# === THREAD 2: LINEAR SEARCH (2000-2999) ===
+2000 SET 0 2007     # position = 0
+2001 SET -1 2008    # result = -1 (not found)
+2002 SYSCALL YIELD  # Yield to other threads
+2003 HLT            # Placeholder - will implement linear search
+
+# === THREAD 3: CUSTOM PROGRAM (3000-3999) ===
+3000 SET 3000 3002  # counter = N
+3001 SET 1 3001     # result = 1 (for factorial)
+3002 SYSCALL YIELD  # Yield to other threads  
+3003 HLT            # Placeholder - will implement factorial
+
+End Instruction Section 
