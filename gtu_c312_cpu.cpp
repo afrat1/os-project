@@ -15,7 +15,6 @@ private:
     vector<string> instructions;
     bool halted;
     bool kernelMode;
-    stack<long> callStack;
     
     // Memory layout constants
     static const int PC_ADDR = 0;
@@ -28,7 +27,7 @@ public:
     GTUC312CPU(int memorySize = 50000) : memory(memorySize, 0), halted(false), kernelMode(true) {
         // Initialize special registers
         memory[PC_ADDR] = 0;        // Program Counter
-        memory[SP_ADDR] = 0;        // Stack Pointer
+        memory[SP_ADDR] = 500;      // Stack Pointer - start after OS data area
         memory[SYSCALL_RESULT_ADDR] = 0;  // System call result
         memory[INSTRUCTION_COUNT_ADDR] = 0; // Instruction count
     }
@@ -130,7 +129,7 @@ public:
     void printStatistics() const {
         cout << "=== CPU Statistics ===" << endl;
         cout << "Instructions executed: " << memory[INSTRUCTION_COUNT_ADDR] << endl;
-        cout << "Stack depth: " << callStack.size() << endl;
+        cout << "Stack pointer: " << memory[SP_ADDR] << endl;
         cout << "Final PC: " << memory[PC_ADDR] << endl;
         cout << "Kernel mode: " << (kernelMode ? "Yes" : "No") << endl;
         cout << "======================" << endl;
@@ -138,13 +137,14 @@ public:
     
     void printThreadTable(ostream& out = cerr) const {
         out << "=== Thread Table (Instruction #" << memory[INSTRUCTION_COUNT_ADDR] << ") ===" << endl;
-        out << "Current Thread: " << memory[200] << endl;
-        out << "System Tick: " << memory[202] << endl;
+        out << "Current Thread: " << memory[21] << endl;  // Address 21 stores current thread
+        out << "Active Threads: " << memory[22] << endl;  // Address 22 stores number of active threads
+        out << "System Tick: " << memory[23] << endl;     // Address 23 stores system tick
         out << endl;
         
-        // Print thread table (10 threads, 10 words each, starting at address 21)
-        for (int thread = 0; thread < 4; thread++) {  // Show first 4 threads for now
-            int baseAddr = 21 + (thread * 10);
+        // Print thread table (10 threads, 10 words each, starting at address 100)
+        for (int thread = 0; thread < 6; thread++) {  // Show first 6 threads
+            int baseAddr = 100 + (thread * 10);
             if (memory[baseAddr + 3] != 0) { // Only show active threads (state != 0)
                 out << "Thread " << thread << ":" << endl;
                 out << "  ID: " << memory[baseAddr + 0] << endl;
@@ -283,33 +283,37 @@ private:
             long address;
             iss >> address;
             checkMemoryAccess(address, false);
-            callStack.push(memory[address]);
-            memory[SP_ADDR] = callStack.size();
+            // Use memory-based stack
+            long sp = memory[SP_ADDR];
+            memory[sp] = memory[address];
+            memory[SP_ADDR] = sp + 1; // Stack grows upwards in memory
             memory[PC_ADDR]++;
             
         } else if (cmd == "POP") {
             long address;
             iss >> address;
             checkMemoryAccess(address, true);
-            if (!callStack.empty()) {
-                memory[address] = callStack.top();
-                callStack.pop();
-                memory[SP_ADDR] = callStack.size();
+            long sp = memory[SP_ADDR];
+            if (sp > 0) {
+                memory[SP_ADDR] = sp - 1;
+                memory[address] = memory[sp - 1];
             }
             memory[PC_ADDR]++;
             
         } else if (cmd == "CALL") {
             long subroutineAddr;
             iss >> subroutineAddr;
-            callStack.push(memory[PC_ADDR] + 1); // Push return address
-            memory[SP_ADDR] = callStack.size();
+            // Push return address to memory stack
+            long sp = memory[SP_ADDR];
+            memory[sp] = memory[PC_ADDR] + 1;
+            memory[SP_ADDR] = sp + 1;
             memory[PC_ADDR] = subroutineAddr;
             
         } else if (cmd == "RET") {
-            if (!callStack.empty()) {
-                memory[PC_ADDR] = callStack.top();
-                callStack.pop();
-                memory[SP_ADDR] = callStack.size();
+            long sp = memory[SP_ADDR];
+            if (sp > 0) {
+                memory[SP_ADDR] = sp - 1;
+                memory[PC_ADDR] = memory[sp - 1];
             } else {
                 memory[PC_ADDR]++;
             }
