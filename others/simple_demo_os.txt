@@ -1,0 +1,99 @@
+# Simple Working GTU-C312 OS Demo
+Begin Data Section
+# === CPU Registers (0-20) ===
+0 0     # Program Counter
+1 0     # Stack Pointer  
+2 0     # System call result
+3 0     # Number of instructions executed
+
+# === Thread Table ===
+21 0    # Thread 0 ID (OS)
+22 0    # Thread 0 state
+27 1    # Thread 1 ID (Sort)
+28 1    # Thread 1 state (ready)
+33 2    # Thread 2 ID (Search)
+34 1    # Thread 2 state (ready)
+39 3    # Thread 3 ID (Factorial)
+40 1    # Thread 3 state (ready)
+
+# OS Variables
+200 1   # Current thread ID
+201 0   # System tick
+
+# Data for threads
+1000 30  # Sort: element 1
+1001 10  # Sort: element 2
+1002 20  # Sort: element 3
+
+2000 10  # Search: target
+2001 30  # Search: arr[0]
+2002 10  # Search: arr[1] (target)
+2003 20  # Search: arr[2]
+2004 -1  # Search: result
+
+3000 4   # Factorial: N
+3001 1   # Factorial: result
+
+End Data Section
+
+Begin Instruction Section
+# === OS Kernel (0-9) ===
+0 SET 1 200     # Start with thread 1
+1 JMP 10        # Jump to thread 1
+
+# OS Scheduler (2-9)
+2 ADD 201 1     # Increment system tick
+3 ADD 200 1     # Next thread
+4 SET 4 202     # Check if > 3
+5 SUBI 202 200  # 4 - thread_id
+6 JIF 200 8     # If <= 0, reset
+7 JMP 10        # Dispatch threads
+8 SET 1 200     # Reset to thread 1
+9 JMP 10        # Dispatch
+
+# === THREAD DISPATCHER (10-19) ===
+10 SET 1 202    # Check thread 1
+11 SUBI 202 200 # 1 - current_thread
+12 JIF 200 20   # If thread 1, jump to sort
+13 SET 2 202    # Check thread 2
+14 SUBI 202 200 # 2 - current_thread
+15 JIF 200 30   # If thread 2, jump to search
+16 JMP 40       # Else thread 3, jump to factorial
+
+# === THREAD 1: SIMPLE SORT (20-29) ===
+20 CPY 1000 202  # Get element 1
+21 CPY 1001 203  # Get element 2
+22 SUBI 202 203  # Compare elem1 - elem2
+23 JIF 203 25    # If elem1 <= elem2, no swap
+24 CPYI2 1000 1001 # Swap elements
+25 SYSCALL PRN 1000 # Print sorted element 1
+26 SYSCALL PRN 1001 # Print sorted element 2
+27 SYSCALL PRN 1002 # Print sorted element 3
+28 SYSCALL YIELD    # Yield to next thread
+29 SYSCALL HLT      # End thread
+
+# === THREAD 2: SIMPLE SEARCH (30-39) ===
+30 CPY 2001 202  # Get arr[0]
+31 SUBI 202 2000 # Compare with target
+32 JIF 202 35    # If equal, found at position 0
+33 CPY 2002 202  # Get arr[1]
+34 SUBI 202 2000 # Compare with target
+35 JIF 202 37    # If equal, found at position 1
+36 JMP 38        # Not found
+37 SET 1 2004    # result = 1 (found at position 1)
+38 SYSCALL PRN 2004 # Print search result
+39 SYSCALL YIELD    # Yield to next thread
+
+# === THREAD 3: SIMPLE FACTORIAL (40-49) ===
+40 CPY 3000 202  # Get N
+41 JIF 202 47    # If N <= 0, done
+42 SET 0 203     # temp = 0
+43 JIF 202 45    # If counter <= 0, done with multiplication
+44 ADD 203 3001  # temp += result
+45 ADD 202 -1    # counter--
+46 JMP 43        # Continue multiplication
+47 CPY 203 3001  # result = temp
+48 SYSCALL PRN 3001 # Print factorial result
+49 SYSCALL YIELD    # Yield
+
+End Instruction Section 

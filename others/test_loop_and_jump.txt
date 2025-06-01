@@ -1,0 +1,22 @@
+# Loop and Jump Test
+# Tests: JIF, Loop logic (sum 1 to 5)
+Begin Data Section
+0 0          # PC
+1 500        # SP
+2 0          # SYSCALL_RESULT
+3 0          # INSTRUCTION_COUNT
+70 5         # Counter (i = 5)
+71 0         # Sum result
+End Data Section
+
+Begin Instruction Section
+0 SET 5 70       # i = 5
+1 SET 0 71       # sum = 0
+2 ADDI 70 71     # sum = sum + i
+3 ADD 70 -1      # i = i - 1
+4 JIF 70 7       # if i <= 0, jump to instruction 7
+5 SET 2 0        # Set PC to 2 (go back to loop)
+6 JMP 8          # This should not execute
+7 HLT            # End of program
+8 SET 999 71     # This should not execute (error marker)
+End Instruction Section 

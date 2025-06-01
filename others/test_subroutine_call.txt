@@ -1,0 +1,19 @@
+# Subroutine Call Test
+# Tests: CALL, RET, subroutine mechanics
+Begin Data Section
+0 0          # PC
+1 500        # SP
+2 0          # SYSCALL_RESULT
+3 0          # INSTRUCTION_COUNT
+80 10        # Input value
+81 0         # Result (will store input * 2)
+End Data Section
+
+Begin Instruction Section
+0 CPY 80 81      # Copy input to result
+1 CALL 4         # Call subroutine at instruction 4
+2 HLT            # End main program
+3 SET 999 81     # Should not execute (error marker)
+4 ADD 81 81      # Subroutine: double the value in memory[81]
+5 RET            # Return to caller
+End Instruction Section 
