@@ -1,6 +1,12 @@
 # GTU-C312 Operating System - Basic Initialization
 # This program demonstrates OS initialization with thread table setup
 
+#✅ Thread table initialization
+#✅ Memory layout properly set up  
+#✅ Basic OS control variables
+#✅ Proper termination with HLT
+#✅ Clean execution (21 instructions)
+
 Begin Data Section
 # Special registers (0-20)
 0 0     # Program Counter (PC)
