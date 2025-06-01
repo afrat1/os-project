@@ -1,0 +1,125 @@
+# GTU-C312 Operating System - Simple Round Robin Scheduler
+# Demonstrates basic thread scheduling and context switching
+#⚠️ Infinite scheduling loop (by design)
+#✅ Round-robin logic implemented
+#✅ Thread state checking
+#❌ No actual thread execution
+#❌ No termination condition
+
+Begin Data Section
+# Special registers (0-20)
+0 0     # Program Counter (PC)
+1 500   # Stack Pointer (SP) - starts at 500
+2 0     # System call result
+3 0     # Number of instructions executed
+
+# OS control variables (21-99)
+21 0    # Current thread ID
+22 3    # Number of active threads (OS + 2 user threads)
+23 0    # System tick counter
+24 0    # Scheduler state
+25 0    # Memory protection flag (0=kernel mode, 1=user mode)
+26 1    # Next thread to schedule
+27 0    # System call type
+28 0    # System call parameter
+
+# Thread table starts at address 100
+# Each thread entry takes 10 memory locations
+
+# Thread 0 (OS thread) - addresses 100-109
+100 0   # Thread ID = 0 (OS)
+101 0   # Start time = 0
+102 0   # Instructions executed = 0
+103 2   # State = 2 (running)
+104 0   # PC = 0
+105 500 # SP = 500
+106 0   # Reserved
+107 0   # Reserved
+108 0   # Reserved
+109 0   # Reserved
+
+# Thread 1 - addresses 110-119
+110 1   # Thread ID = 1
+111 0   # Start time
+112 0   # Instructions executed
+113 1   # State = 1 (ready)
+114 1000 # PC = 1000 (thread 1 start address)
+115 600  # SP = 600
+116 0   # Reserved
+117 0   # Reserved
+118 0   # Reserved
+119 0   # Reserved
+
+# Thread 2 - addresses 120-129
+120 2   # Thread ID = 2
+121 0   # Start time
+122 0   # Instructions executed
+123 1   # State = 1 (ready)
+124 2000 # PC = 2000 (thread 2 start address)
+125 700  # SP = 700
+126 0   # Reserved
+127 0   # Reserved
+128 0   # Reserved
+129 0   # Reserved
+
+# Working variables for scheduler
+200 0   # Temp variable 1
+201 0   # Temp variable 2
+202 0   # Temp variable 3
+
+End Data Section
+
+Begin Instruction Section
+# OS Initialization
+0 SYSCALL PRN 100  # Print "Starting OS" (thread 0 ID)
+1 SYSCALL PRN 22   # Print number of threads
+2 SYSCALL PRN 21   # Print current thread (should be 0)
+
+# Round Robin Scheduler Main Loop
+3 SYSCALL PRN 300  # Debug marker for scheduler entry
+
+# Calculate next thread to schedule
+4 CPY 21 26        # Copy current thread to next
+5 ADD 26 1         # Increment to next thread
+6 ADD 26 -3        # Subtract 3 to check if >= 3
+7 JIF 26 9         # If next >= 3, jump to wrap around
+8 ADD 26 3         # Add back 3 (no wrap needed)
+9 SET 0 26         # Wrap to thread 0
+
+# Check if next thread is ready
+10 SET 10 200      # Base multiplier
+11 ADDI 26 200     # Calculate address offset
+12 ADDI 200 200    # 
+13 ADDI 200 200    # 
+14 ADDI 200 200    # 
+15 ADDI 200 200    # Now 200 = thread_id * 10
+16 ADD 200 100     # Add base address (100)
+17 ADD 200 3       # Point to state field (base + 3)
+18 CPYI 200 201    # Get thread state
+
+# If thread is ready (state=1) or running (state=2), schedule it
+19 ADD 201 -1      # Check if state == 1 (ready)
+20 JIF 201 23      # If ready, jump to schedule
+21 CPY 201 200     # Restore state value
+22 ADD 201 -2      # Check if state == 2 (running)
+23 JIF 201 26      # If running, jump to schedule
+
+# Thread not ready, try next one (simplified - just continue)
+24 ADD 26 1        # Try next thread
+25 JMP 10          # Back to check next thread
+
+# Schedule the selected thread
+26 CPY 26 21       # Update current thread ID
+27 SYSCALL PRN 21  # Print current thread for debugging
+
+# For now, just demonstrate the scheduler without full context switching
+28 JMP 3           # Back to scheduler loop (creates infinite loop for demo)
+
+# In a complete implementation, here we would:
+# 1. Save current thread's PC and SP
+# 2. Load next thread's PC and SP  
+# 3. Switch to user mode
+# 4. Jump to thread code
+
+# Simple demonstration threads would go at addresses 1000, 2000, etc.
+End Instruction Section 
