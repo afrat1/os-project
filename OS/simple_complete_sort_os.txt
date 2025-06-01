@@ -1,0 +1,150 @@
+# GTU-C312 Complete Bubble Sort - Simple Version
+# Direct execution without scheduler loops
+
+Begin Data Section
+# Special registers (0-20)
+0 0     # Program Counter (PC)
+1 500   # Stack Pointer (SP)
+2 0     # System call result
+3 0     # Number of instructions executed
+
+# OS control variables (21-99)
+21 0    # Current thread ID
+22 1    # Total threads (just sorting)
+23 0    # System tick counter
+
+# PC storage in user-accessible memory (>= 1000)
+1010 20 # Thread 1 PC storage (sorting thread)
+
+# Sorting data - array to be sorted
+1020 5    # N = number of elements to sort
+1021 64   # Array element 0: 64
+1022 25   # Array element 1: 25
+1023 89   # Array element 2: 89
+1024 12   # Array element 3: 12
+1025 37   # Array element 4: 37
+
+# Working variables
+1030 0   # temp for first element
+1031 0   # temp for second element
+1032 0   # temp for comparison result
+
+End Data Section
+
+Begin Instruction Section
+# OS starts sorting directly
+0 SYSCALL PRN 888  # OS startup marker
+1 SYSCALL PRN 5    # Print N (number of elements)
+
+# Print original array
+2 SYSCALL PRN 1021 # Print original: 64
+3 SYSCALL PRN 1022 # Print original: 25
+4 SYSCALL PRN 1023 # Print original: 89
+5 SYSCALL PRN 1024 # Print original: 12
+6 SYSCALL PRN 1025 # Print original: 37
+
+# PASS 1: Bubble largest element to the end
+7 CPY 1021 1030   # Load element 0 (64)
+8 CPY 1022 1031   # Load element 1 (25)  
+9 CPY 1030 1032   # Copy element 0 for comparison
+10 SUBI 1032 1031 # 64 - 25 = 39 > 0, swap needed
+11 JIF 1032 14    # If element 0 <= element 1, no swap
+# Swap elements 0 and 1
+12 CPY 1031 1021  # element[0] = 25
+13 CPY 1030 1022  # element[1] = 64
+
+14 CPY 1022 1030  # Load element 1 (current value)
+15 CPY 1023 1031  # Load element 2 (89)
+16 CPY 1030 1032  # Copy element 1 for comparison
+17 SUBI 1032 1031 # element1 - element2
+18 JIF 1032 21    # If element1 <= element2, no swap
+# Swap elements 1 and 2
+19 CPY 1031 1022  # element[1] = element[2]
+20 CPY 1030 1023  # element[2] = original element[1]
+
+21 CPY 1023 1030  # Load element 2 (current value)
+22 CPY 1024 1031  # Load element 3 (12)
+23 CPY 1030 1032  # Copy element 2 for comparison
+24 SUBI 1032 1031 # element2 - element3
+25 JIF 1032 28    # If element2 <= element3, no swap
+# Swap elements 2 and 3
+26 CPY 1031 1023  # element[2] = element[3]
+27 CPY 1030 1024  # element[3] = original element[2]
+
+28 CPY 1024 1030  # Load element 3 (current value)
+29 CPY 1025 1031  # Load element 4 (37)
+30 CPY 1030 1032  # Copy element 3 for comparison
+31 SUBI 1032 1031 # element3 - element4
+32 JIF 1032 35    # If element3 <= element4, no swap
+# Swap elements 3 and 4
+33 CPY 1031 1024  # element[3] = element[4]
+34 CPY 1030 1025  # element[4] = original element[3]
+
+# PASS 2: Bubble second largest element
+35 CPY 1021 1030  # Load element 0
+36 CPY 1022 1031  # Load element 1
+37 CPY 1030 1032  # Copy element 0 for comparison
+38 SUBI 1032 1031 # element0 - element1
+39 JIF 1032 42    # If element0 <= element1, no swap
+# Swap elements 0 and 1
+40 CPY 1031 1021  # element[0] = element[1]
+41 CPY 1030 1022  # element[1] = original element[0]
+
+42 CPY 1022 1030  # Load element 1 (current value)
+43 CPY 1023 1031  # Load element 2
+44 CPY 1030 1032  # Copy element 1 for comparison
+45 SUBI 1032 1031 # element1 - element2
+46 JIF 1032 49    # If element1 <= element2, no swap
+# Swap elements 1 and 2
+47 CPY 1031 1022  # element[1] = element[2]
+48 CPY 1030 1023  # element[2] = original element[1]
+
+49 CPY 1023 1030  # Load element 2 (current value)
+50 CPY 1024 1031  # Load element 3
+51 CPY 1030 1032  # Copy element 2 for comparison
+52 SUBI 1032 1031 # element2 - element3
+53 JIF 1032 56    # If element2 <= element3, no swap
+# Swap elements 2 and 3
+54 CPY 1031 1023  # element[2] = element[3]
+55 CPY 1030 1024  # element[3] = original element[2]
+
+# PASS 3: Bubble third largest element
+56 CPY 1021 1030  # Load element 0
+57 CPY 1022 1031  # Load element 1
+58 CPY 1030 1032  # Copy element 0 for comparison
+59 SUBI 1032 1031 # element0 - element1
+60 JIF 1032 63    # If element0 <= element1, no swap
+# Swap elements 0 and 1
+61 CPY 1031 1021  # element[0] = element[1]
+62 CPY 1030 1022  # element[1] = original element[0]
+
+63 CPY 1022 1030  # Load element 1 (current value)
+64 CPY 1023 1031  # Load element 2
+65 CPY 1030 1032  # Copy element 1 for comparison
+66 SUBI 1032 1031 # element1 - element2
+67 JIF 1032 70    # If element1 <= element2, no swap
+# Swap elements 1 and 2
+68 CPY 1031 1022  # element[1] = element[2]
+69 CPY 1030 1023  # element[2] = original element[1]
+
+# PASS 4: Final comparison
+70 CPY 1021 1030  # Load element 0
+71 CPY 1022 1031  # Load element 1
+72 CPY 1030 1032  # Copy element 0 for comparison
+73 SUBI 1032 1031 # element0 - element1
+74 JIF 1032 77    # If element0 <= element1, no swap
+# Swap elements 0 and 1
+75 CPY 1031 1021  # element[0] = element[1]
+76 CPY 1030 1022  # element[1] = original element[0]
+
+# Sorting completed - print sorted array
+77 SYSCALL PRN 8888 # Sorting completed marker
+78 SYSCALL PRN 1021 # Print sorted element 0 (should be 12)
+79 SYSCALL PRN 1022 # Print sorted element 1 (should be 25)
+80 SYSCALL PRN 1023 # Print sorted element 2 (should be 37)
+81 SYSCALL PRN 1024 # Print sorted element 3 (should be 64)
+82 SYSCALL PRN 1025 # Print sorted element 4 (should be 89)
+83 SYSCALL PRN 6666 # End marker
+84 HLT             # CPU halt
+
+End Instruction Section 
