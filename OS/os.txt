@@ -234,20 +234,205 @@ Begin Instruction Section
 1089 CPY 1050 1024      # element[3] = 64
 1090 SYSCALL YIELD      # YIELD
 
-# More passes continue...
-1091 SYSCALL PRN 8888   # Sorting completed marker
-1092 SYSCALL PRN 1021   # Print sorted[0]
-1093 SYSCALL PRN 1022   # Print sorted[1]
-1094 SYSCALL PRN 1023   # Print sorted[2]
-1095 SYSCALL PRN 1024   # Print sorted[3]
-1096 SYSCALL PRN 1025   # Print sorted[4]
-1097 SYSCALL PRN 1026   # Print sorted[5]
-1098 SYSCALL PRN 1027   # Print sorted[6]
-1099 SYSCALL PRN 1028   # Print sorted[7]
-1100 SYSCALL YIELD      # YIELD before terminating
+# === BUBBLE SORT PASS 3 ===
+# Compare positions 0-1
+1091 CPY 1021 1050      # element[0] = 25
+1092 CPY 1022 1051      # element[1] = 12
+1093 CPY 1051 1052      # Copy element[1] to temp
+1094 SUBI 1050 1052     # 1052 = element[0] - element[1] = 25 - 12 = 13
+1095 JIF 1052 1098      # If <=0, skip swap (13 > 0, need swap)
+1096 CPY 1051 1021      # element[0] = 12
+1097 CPY 1050 1022      # element[1] = 25
+1098 SYSCALL YIELD      # YIELD
+
+# Compare positions 1-2
+1099 CPY 1022 1050      # element[1] = 25 (after potential swap)
+1100 CPY 1023 1051      # element[2] = 37
+1101 CPY 1051 1052      # Copy element[2] to temp
+1102 SUBI 1050 1052     # 1052 = element[1] - element[2] = 25 - 37 = -12
+1103 JIF 1052 1106      # If <=0, skip swap (-12 <= 0, so skip)
+1104 CPY 1051 1022      # Swap (not executed)
+1105 CPY 1050 1023      # Swap (not executed)
+1106 SYSCALL YIELD      # YIELD
+
+# Compare positions 2-3
+1107 CPY 1023 1050      # element[2] = 37
+1108 CPY 1024 1051      # element[3] = 64
+1109 CPY 1051 1052      # Copy element[3] to temp
+1110 SUBI 1050 1052     # 1052 = element[2] - element[3] = 37 - 64 = -27
+1111 JIF 1052 1114      # If <=0, skip swap (-27 <= 0, so skip)
+1112 CPY 1051 1023      # Swap (not executed)
+1113 CPY 1050 1024      # Swap (not executed)
+1114 SYSCALL YIELD      # YIELD
+
+# Compare positions 3-4
+1115 CPY 1024 1050      # element[3] = 64
+1116 CPY 1025 1051      # element[4] = 89
+1117 CPY 1051 1052      # Copy element[4] to temp
+1118 SUBI 1050 1052     # 1052 = element[3] - element[4] = 64 - 89 = -25
+1119 JIF 1052 1122      # If <=0, skip swap (-25 <= 0, so skip)
+1120 CPY 1051 1024      # Swap (not executed)
+1121 CPY 1050 1025      # Swap (not executed)
+1122 SYSCALL YIELD      # YIELD
+
+# Compare positions 4-5
+1123 CPY 1025 1050      # element[4] = 89
+1124 CPY 1026 1051      # element[5] = 6
+1125 CPY 1051 1052      # Copy element[5] to temp
+1126 SUBI 1050 1052     # 1052 = element[4] - element[5] = 89 - 6 = 83
+1127 JIF 1052 1130      # If <=0, skip swap (83 > 0, need swap)
+1128 CPY 1051 1025      # element[4] = 6
+1129 CPY 1050 1026      # element[5] = 89
+1130 SYSCALL YIELD      # YIELD
+
+# Compare positions 5-6 (MISSING from Pass 3!)
+1131 CPY 1026 1050      # element[5] = 89 (after potential swap)
+1132 CPY 1027 1051      # element[6] = 55
+1133 CPY 1051 1052      # Copy element[6] to temp
+1134 SUBI 1050 1052     # 1052 = element[5] - element[6] = 89 - 55 = 34
+1135 JIF 1052 1138      # If <=0, skip swap (34 > 0, need swap)
+1136 CPY 1051 1026      # element[5] = 55
+1137 CPY 1050 1027      # element[6] = 89
+1138 SYSCALL YIELD      # YIELD
+
+# === BUBBLE SORT PASS 4 ===
+# Compare positions 0-1
+1139 CPY 1021 1050      # element[0] = 12
+1140 CPY 1022 1051      # element[1] = 25
+1141 CPY 1051 1052      # Copy element[1] to temp
+1142 SUBI 1050 1052     # 1052 = element[0] - element[1] = 12 - 25 = -13
+1143 JIF 1052 1146      # If <=0, skip swap (-13 <= 0, so skip)
+1144 CPY 1051 1021      # Swap (not executed)
+1145 CPY 1050 1022      # Swap (not executed)
+1146 SYSCALL YIELD      # YIELD
+
+# Compare positions 1-2
+1147 CPY 1022 1050      # element[1] = 25
+1148 CPY 1023 1051      # element[2] = 37
+1149 CPY 1051 1052      # Copy element[2] to temp
+1150 SUBI 1050 1052     # 1052 = element[1] - element[2] = 25 - 37 = -12
+1151 JIF 1052 1154      # If <=0, skip swap (-12 <= 0, so skip)
+1152 CPY 1051 1022      # Swap (not executed)
+1153 CPY 1050 1023      # Swap (not executed)
+1154 SYSCALL YIELD      # YIELD
+
+# Compare positions 2-3
+1155 CPY 1023 1050      # element[2] = 37
+1156 CPY 1024 1051      # element[3] = 64
+1157 CPY 1051 1052      # Copy element[3] to temp
+1158 SUBI 1050 1052     # 1052 = element[2] - element[3] = 37 - 64 = -27
+1159 JIF 1052 1162      # If <=0, skip swap (-27 <= 0, so skip)
+1160 CPY 1051 1023      # Swap (not executed)
+1161 CPY 1050 1024      # Swap (not executed)
+1162 SYSCALL YIELD      # YIELD
+
+# Compare positions 3-4
+1163 CPY 1024 1050      # element[3] = 64
+1164 CPY 1025 1051      # element[4] = 6
+1165 CPY 1051 1052      # Copy element[4] to temp
+1166 SUBI 1050 1052     # 1052 = element[3] - element[4] = 64 - 6 = 58
+1167 JIF 1052 1170      # If <=0, skip swap (58 > 0, need swap)
+1168 CPY 1051 1024      # element[3] = 6
+1169 CPY 1050 1025      # element[4] = 64
+1170 SYSCALL YIELD      # YIELD
+
+# Compare positions 4-5
+1171 CPY 1025 1050      # element[4] = 64 (after potential swap)
+1172 CPY 1026 1051      # element[5] = 55
+1173 CPY 1051 1052      # Copy element[5] to temp
+1174 SUBI 1050 1052     # 1052 = element[4] - element[5] = 64 - 55 = 9
+1175 JIF 1052 1178      # If <=0, skip swap (9 > 0, need swap)
+1176 CPY 1051 1025      # element[4] = 55
+1177 CPY 1050 1026      # element[5] = 64
+1178 SYSCALL YIELD      # YIELD
+
+# === BUBBLE SORT PASS 5 ===
+# Compare positions 0-1
+1179 CPY 1021 1050      # element[0] = 12
+1180 CPY 1022 1051      # element[1] = 25
+1181 CPY 1051 1052      # Copy element[1] to temp
+1182 SUBI 1050 1052     # 1052 = element[0] - element[1] = 12 - 25 = -13
+1183 JIF 1052 1186      # If <=0, skip swap (-13 <= 0, so skip)
+1184 CPY 1051 1021      # Swap (not executed)
+1185 CPY 1050 1022      # Swap (not executed)
+1186 SYSCALL YIELD      # YIELD
+
+# Compare positions 1-2
+1187 CPY 1022 1050      # element[1] = 25
+1188 CPY 1023 1051      # element[2] = 37
+1189 CPY 1051 1052      # Copy element[2] to temp
+1190 SUBI 1050 1052     # 1052 = element[1] - element[2] = 25 - 37 = -12
+1191 JIF 1052 1194      # If <=0, skip swap (-12 <= 0, so skip)
+1192 CPY 1051 1022      # Swap (not executed)
+1193 CPY 1050 1023      # Swap (not executed)
+1194 SYSCALL YIELD      # YIELD
+
+# Compare positions 2-3
+1195 CPY 1023 1050      # element[2] = 37
+1196 CPY 1024 1051      # element[3] = 6
+1197 CPY 1051 1052      # Copy element[3] to temp
+1198 SUBI 1050 1052     # 1052 = element[2] - element[3] = 37 - 6 = 31
+1199 JIF 1052 1202      # If <=0, skip swap (31 > 0, need swap)
+1200 CPY 1051 1023      # element[2] = 6
+1201 CPY 1050 1024      # element[3] = 37
+1202 SYSCALL YIELD      # YIELD
+
+# Compare positions 3-4
+1203 CPY 1024 1050      # element[3] = 37 (after potential swap)
+1204 CPY 1025 1051      # element[4] = 55
+1205 CPY 1051 1052      # Copy element[4] to temp
+1206 SUBI 1050 1052     # 1052 = element[3] - element[4] = 37 - 55 = -18
+1207 JIF 1052 1210      # If <=0, skip swap (-18 <= 0, so skip)
+1208 CPY 1051 1024      # Swap (not executed)
+1209 CPY 1050 1025      # Swap (not executed)
+1210 SYSCALL YIELD      # YIELD
+
+# === BUBBLE SORT PASS 6 ===
+# Compare positions 0-1
+1211 CPY 1021 1050      # element[0] = 12
+1212 CPY 1022 1051      # element[1] = 25
+1213 CPY 1051 1052      # Copy element[1] to temp
+1214 SUBI 1050 1052     # 1052 = element[0] - element[1] = 12 - 25 = -13
+1215 JIF 1052 1218      # If <=0, skip swap (-13 <= 0, so skip)
+1216 CPY 1051 1021      # Swap (not executed)
+1217 CPY 1050 1022      # Swap (not executed)
+1218 SYSCALL YIELD      # YIELD
+
+# Compare positions 1-2
+1219 CPY 1022 1050      # element[1] = 25
+1220 CPY 1023 1051      # element[2] = 6
+1221 CPY 1051 1052      # Copy element[2] to temp
+1222 SUBI 1050 1052     # 1052 = element[1] - element[2] = 25 - 6 = 19
+1223 JIF 1052 1226      # If <=0, skip swap (19 > 0, need swap)
+1224 CPY 1051 1022      # element[1] = 6
+1225 CPY 1050 1023      # element[2] = 25
+1226 SYSCALL YIELD      # YIELD
+
+# === BUBBLE SORT PASS 7 ===
+# Compare positions 0-1
+1227 CPY 1021 1050      # element[0] = 12
+1228 CPY 1022 1051      # element[1] = 6
+1229 CPY 1051 1052      # Copy element[1] to temp
+1230 SUBI 1050 1052     # 1052 = element[0] - element[1] = 12 - 6 = 6
+1231 JIF 1052 1234      # If <=0, skip swap (6 > 0, need swap)
+1232 CPY 1051 1021      # element[0] = 6
+1233 CPY 1050 1022      # element[1] = 12
+1234 SYSCALL YIELD      # YIELD
+
+# === BUBBLE SORT COMPLETED ===
+1235 SYSCALL PRN 8888   # Sorting completed marker
+1236 SYSCALL PRN 1021   # Print sorted[0] = 6
+1237 SYSCALL PRN 1022   # Print sorted[1] = 12
+1238 SYSCALL PRN 1023   # Print sorted[2] = 25
+1239 SYSCALL PRN 1024   # Print sorted[3] = 37
+1240 SYSCALL PRN 1025   # Print sorted[4] = 55
+1241 SYSCALL PRN 1026   # Print sorted[5] = 64
+1242 SYSCALL PRN 1027   # Print sorted[6] = 89
+1243 SYSCALL PRN 1028   # Print sorted[7] = 91
+1244 SYSCALL YIELD      # YIELD before terminating
 
 # Thread 0 termination
-1101 SYSCALL HLT        # Properly terminate thread 0
+1245 SYSCALL HLT        # Properly terminate thread 0
 
 # ==== THREAD 1: COMPREHENSIVE LINEAR SEARCH (Starting at address 2000) ====
 2000 SYSCALL PRN 7777   # Thread 1 started
