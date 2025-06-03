@@ -1,57 +1,148 @@
 # GTU-C312 Operating System with PROPER LOOP-BASED BUBBLE SORT
 # Fixed bubble sort comparison and simplified search logic!
+# CORRECTED MEMORY LAYOUT according to project specification
+# FULL 10-THREAD SUPPORT as per memory layout specification
 
 Begin Data Section
-# Special registers (0-20)
+# ====== REGISTERS AND OS AREA (0-20) ======
 0 0     # Program Counter (PC)
-1 500   # Stack Pointer (SP)  
+1 500   # Stack Pointer (SP) - OS stack in OS area  
 2 0     # System call result
 3 0     # Number of instructions executed
 
-# OS control data (21-99)
+# ====== OS DATA ONLY (21-999) ======
 21 0    # Current thread ID
-22 3    # Number of active threads (3 threads)
+22 3    # Number of active threads (3 active out of 10 total)
 23 0    # System tick counter
 
-# Thread Table (100-190, 10 words per thread)
-# Thread 0 (Loop-based Bubble Sort)
+# Thread Table (100-199, 10 words per thread) - ALL 10 THREADS
+# Thread 0 (Loop-based Bubble Sort) - ACTIVE
 100 0   # Thread ID
 101 0   # Start time
 102 0   # Instruction count
-103 1   # State (1=Ready, 2=Running, 3=Blocked)
+103 1   # State (1=Ready, 2=Running, 3=Blocked, 0=Inactive)
 104 1000 # PC (starts at address 1000)
-105 1500 # SP (stack at 1500)
+105 1900 # SP (stack at end of Thread 0 range: 1900-1999)
 106 0   # Reserved
 107 0   # Reserved
 108 0   # Reserved
 109 0   # Reserved
 
-# Thread 1 (Loop-based Linear Search)
+# Thread 1 (Loop-based Linear Search) - ACTIVE
 110 1   # Thread ID
 111 0   # Start time  
 112 0   # Instruction count
 113 1   # State (1=Ready)
 114 2000 # PC (starts at address 2000)
-115 2500 # SP (stack at 2500)
+115 2900 # SP (stack at end of Thread 1 range: 2900-2999)
 116 0   # Reserved
 117 0   # Reserved
 118 0   # Reserved
 119 0   # Reserved
 
-# Thread 2 (Loop-based Counter)
+# Thread 2 (Loop-based Counter) - ACTIVE
 120 2   # Thread ID
 121 0   # Start time
 122 0   # Instruction count
 123 1   # State (1=Ready)
 124 3000 # PC (starts at address 3000)
-125 3500 # SP (stack at 3500)
+125 3900 # SP (stack at end of Thread 2 range: 3900-3999)
 126 0   # Reserved
 127 0   # Reserved
 128 0   # Reserved
 129 0   # Reserved
 
-# Bubble sort data (Thread 0) - Expanded to 10 elements
-1020 10   # N = number of elements to sort (increased to 10)
+# Thread 3 - INACTIVE
+130 3   # Thread ID
+131 0   # Start time
+132 0   # Instruction count
+133 0   # State (0=Inactive)
+134 4000 # PC (would start at address 4000)
+135 4900 # SP (stack at end of Thread 3 range: 4900-4999)
+136 0   # Reserved
+137 0   # Reserved
+138 0   # Reserved
+139 0   # Reserved
+
+# Thread 4 - INACTIVE
+140 4   # Thread ID
+141 0   # Start time
+142 0   # Instruction count
+143 0   # State (0=Inactive)
+144 5000 # PC (would start at address 5000)
+145 5900 # SP (stack at end of Thread 4 range: 5900-5999)
+146 0   # Reserved
+147 0   # Reserved
+148 0   # Reserved
+149 0   # Reserved
+
+# Thread 5 - INACTIVE
+150 5   # Thread ID
+151 0   # Start time
+152 0   # Instruction count
+153 0   # State (0=Inactive)
+154 6000 # PC (would start at address 6000)
+155 6900 # SP (stack at end of Thread 5 range: 6900-6999)
+156 0   # Reserved
+157 0   # Reserved
+158 0   # Reserved
+159 0   # Reserved
+
+# Thread 6 - INACTIVE
+160 6   # Thread ID
+161 0   # Start time
+162 0   # Instruction count
+163 0   # State (0=Inactive)
+164 7000 # PC (would start at address 7000)
+165 7900 # SP (stack at end of Thread 6 range: 7900-7999)
+166 0   # Reserved
+167 0   # Reserved
+168 0   # Reserved
+169 0   # Reserved
+
+# Thread 7 - INACTIVE
+170 7   # Thread ID
+171 0   # Start time
+172 0   # Instruction count
+173 0   # State (0=Inactive)
+174 8000 # PC (would start at address 8000)
+175 8900 # SP (stack at end of Thread 7 range: 8900-8999)
+176 0   # Reserved
+177 0   # Reserved
+178 0   # Reserved
+179 0   # Reserved
+
+# Thread 8 - INACTIVE
+180 8   # Thread ID
+181 0   # Start time
+182 0   # Instruction count
+183 0   # State (0=Inactive)
+184 9000 # PC (would start at address 9000)
+185 9900 # SP (stack at end of Thread 8 range: 9900-9999)
+186 0   # Reserved
+187 0   # Reserved
+188 0   # Reserved
+189 0   # Reserved
+
+# Thread 9 (Thread #10 in spec) - INACTIVE
+190 9   # Thread ID
+191 0   # Start time
+192 0   # Instruction count
+193 0   # State (0=Inactive)
+194 10000 # PC (would start at address 10000)
+195 10900 # SP (stack at end of Thread 9 range: 10900-10999)
+196 0   # Reserved
+197 0   # Reserved
+198 0   # Reserved
+199 0   # Reserved
+
+# OS marker values (in OS data area)
+888 888   # OS started marker
+999 999   # OS control marker
+
+# ====== THREAD 0 DATA (1000-1999) - Bubble Sort Thread - ACTIVE ======
+# Thread 0 data and variables - ALL within 1000-1999 range
+1020 10   # N = number of elements to sort
 1021 64   # Array[0] = 64
 1022 25   # Array[1] = 25  
 1023 89   # Array[2] = 89
@@ -60,29 +151,10 @@ Begin Data Section
 1026 91   # Array[5] = 91
 1027 6    # Array[6] = 6
 1028 55   # Array[7] = 55
-1029 73   # Array[8] = 73 (new element)
-1030 41   # Array[9] = 41 (new element)
+1029 73   # Array[8] = 73
+1030 41   # Array[9] = 41
 
-# Linear search data (Thread 1) - Expanded to 10 elements
-2030 10   # N = number of elements (increased to 10)
-2031 37   # Search key (looking for 37)
-2032 64   # Search array[0] = 64
-2033 25   # Search array[1] = 25
-2034 89   # Search array[2] = 89
-2035 12   # Search array[3] = 12
-2036 37   # Search array[4] = 37 (still at index 4)
-2037 91   # Search array[5] = 91
-2038 6    # Search array[6] = 6
-2039 55   # Search array[7] = 55
-2040 73   # Search array[8] = 73 (new element)
-2041 41   # Search array[9] = 41 (new element)
-2050 -1   # Search result (-1 = not found, else index)
-
-# Counter data (Thread 2)
-3040 9    # Counter limit (count 0-8, so 9 numbers)
-3041 0    # Current counter value
-
-# Loop variables and working variables
+# Thread 0 working variables (1050-1099)
 1050 0   # temp variable 1 (array[j] value)
 1051 0   # temp variable 2 (array[j+1] value)
 1052 0   # temp variable 3 (comparison result)
@@ -93,15 +165,101 @@ Begin Data Section
 1057 0   # array[j+1] address
 1058 0   # temp storage for values during swap
 
-# Marker values for printing
-888 888   # OS started marker
-9999 9999 # Thread 0 started marker  
-8888 8888 # Thread 0 completed marker
-7777 7777 # Thread 1 started marker
-5555 5555 # Thread 1 completed marker
-6666 6666 # Thread 2 started marker
-4444 4444 # Thread 2 completed marker
-1111 1111 # All completed marker
+# Thread 0 marker values (1800-1899)
+1800 9999 # Thread 0 started marker  
+1801 8888 # Thread 0 completed marker
+
+# Thread 0 stack space: 1900-1999 (100 words for stack)
+
+# ====== THREAD 1 DATA (2000-2999) - Linear Search Thread - ACTIVE ======
+# Thread 1 data and variables - ALL within 2000-2999 range
+2020 10   # N = number of elements
+2021 37   # Search key (looking for 37)
+2022 64   # Search array[0] = 64
+2023 25   # Search array[1] = 25
+2024 89   # Search array[2] = 89
+2025 12   # Search array[3] = 12
+2026 37   # Search array[4] = 37 (target element)
+2027 91   # Search array[5] = 91
+2028 6    # Search array[6] = 6
+2029 55   # Search array[7] = 55
+2030 73   # Search array[8] = 73
+2031 41   # Search array[9] = 41
+2040 -1   # Search result (-1 = not found, else index)
+
+# Thread 1 working variables (2050-2099)
+2050 0   # temp variable 1 (array element value)
+2051 0   # temp variable 2 (search key copy)
+2052 0   # temp variable 3 (comparison result)
+2053 0   # loop counter
+2054 0   # general purpose temp
+2055 0   # general purpose temp 2
+
+# Thread 1 marker values (2800-2899)
+2800 7777 # Thread 1 started marker
+2801 5555 # Thread 1 completed marker
+
+# Thread 1 stack space: 2900-2999 (100 words for stack)
+
+# ====== THREAD 2 DATA (3000-3999) - Counter Thread - ACTIVE ======
+# Thread 2 data and variables - ALL within 3000-3999 range
+3020 9    # Counter limit (count 0-8, so 9 numbers)
+3021 0    # Current counter value
+
+# Thread 2 working variables (3050-3099)
+3050 0   # temp variable 1
+3051 0   # temp variable 2 
+3052 0   # comparison result
+3053 0   # general purpose temp
+
+# Thread 2 marker values (3800-3899)
+3800 6666 # Thread 2 started marker
+3801 4444 # Thread 2 completed marker
+3802 1111 # All threads completed marker
+
+# Thread 2 stack space: 3900-3999 (100 words for stack)
+
+# ====== THREAD 3 DATA (4000-4999) - INACTIVE ======
+# First instruction at 4000 should be SYSCALL HLT to keep thread inactive
+4020 0    # Placeholder data
+4800 4001 # Thread 3 inactive marker
+# Thread 3 stack space: 4900-4999
+
+# ====== THREAD 4 DATA (5000-5999) - INACTIVE ======
+# First instruction at 5000 should be SYSCALL HLT to keep thread inactive
+5020 0    # Placeholder data
+5800 5001 # Thread 4 inactive marker
+# Thread 4 stack space: 5900-5999
+
+# ====== THREAD 5 DATA (6000-6999) - INACTIVE ======
+# First instruction at 6000 should be SYSCALL HLT to keep thread inactive
+6020 0    # Placeholder data
+6800 6001 # Thread 5 inactive marker
+# Thread 5 stack space: 6900-6999
+
+# ====== THREAD 6 DATA (7000-7999) - INACTIVE ======
+# First instruction at 7000 should be SYSCALL HLT to keep thread inactive
+7020 0    # Placeholder data
+7800 7001 # Thread 6 inactive marker
+# Thread 6 stack space: 7900-7999
+
+# ====== THREAD 7 DATA (8000-8999) - INACTIVE ======
+# First instruction at 8000 should be SYSCALL HLT to keep thread inactive
+8020 0    # Placeholder data
+8800 8001 # Thread 7 inactive marker
+# Thread 7 stack space: 8900-8999
+
+# ====== THREAD 8 DATA (9000-9999) - INACTIVE ======
+# First instruction at 9000 should be SYSCALL HLT to keep thread inactive
+9020 0    # Placeholder data
+9800 9001 # Thread 8 inactive marker
+# Thread 8 stack space: 9900-9999
+
+# ====== THREAD 9 DATA (10000-10999) - Thread #10 in spec - INACTIVE ======
+# First instruction at 10000 should be SYSCALL HLT to keep thread inactive
+10020 0   # Placeholder data
+10800 10001 # Thread 9 (Thread #10) inactive marker
+# Thread 9 stack space: 10900-10999
 
 End Data Section
 
@@ -121,7 +279,7 @@ Begin Instruction Section
 9 HLT
 
 # ==== THREAD 0: LOOP-BASED BUBBLE SORT (Starting at address 1000) ====
-1000 SYSCALL PRN 9999   # Thread 0 started
+1000 SYSCALL PRN 1800   # Thread 0 started marker
 1001 SYSCALL PRN 1020   # Print N (10)
 
 # Print original array
@@ -198,7 +356,7 @@ Begin Instruction Section
 1048 JIF 1058 1015      # Always jump back to OUTER_LOOP (since 0 <= 0)
 
 # SORTING COMPLETED! (address 1049)
-1049 SYSCALL PRN 8888   # Sorting completed marker
+1049 SYSCALL PRN 1801   # Sorting completed marker
 1050 SYSCALL PRN 1021   # Print sorted[0]
 1051 SYSCALL PRN 1022   # Print sorted[1]
 1052 SYSCALL PRN 1023   # Print sorted[2]
@@ -213,66 +371,87 @@ Begin Instruction Section
 1061 SYSCALL HLT        # Thread 0 termination
 
 # ==== THREAD 1: SIMPLE LINEAR SEARCH (Starting at address 2000) ====
-2000 SYSCALL PRN 7777   # Thread 1 started
-2001 SYSCALL PRN 2030   # Print N (10)
-2002 SYSCALL PRN 2031   # Print search key (37)
+2000 SYSCALL PRN 2800   # Thread 1 started marker
+2001 SYSCALL PRN 2020   # Print N (10)
+2002 SYSCALL PRN 2021   # Print search key (37)
 
 # Print search array
-2003 SYSCALL PRN 2032   # Print array[0]
-2004 SYSCALL PRN 2033   # Print array[1]
-2005 SYSCALL PRN 2034   # Print array[2]
-2006 SYSCALL PRN 2035   # Print array[3]
-2007 SYSCALL PRN 2036   # Print array[4]
-2008 SYSCALL PRN 2037   # Print array[5]
-2009 SYSCALL PRN 2038   # Print array[6]
-2010 SYSCALL PRN 2039   # Print array[7]
-2011 SYSCALL PRN 2040   # Print array[8]
-2012 SYSCALL PRN 2041   # Print array[9]
+2003 SYSCALL PRN 2022   # Print array[0]
+2004 SYSCALL PRN 2023   # Print array[1]
+2005 SYSCALL PRN 2024   # Print array[2]
+2006 SYSCALL PRN 2025   # Print array[3]
+2007 SYSCALL PRN 2026   # Print array[4]
+2008 SYSCALL PRN 2027   # Print array[5]
+2009 SYSCALL PRN 2028   # Print array[6]
+2010 SYSCALL PRN 2029   # Print array[7]
+2011 SYSCALL PRN 2030   # Print array[8]
+2012 SYSCALL PRN 2031   # Print array[9]
 2013 SYSCALL YIELD      # YIELD after printing
 
 # SIMPLE LINEAR SEARCH - CHECK INDEX 4 DIRECTLY
-2014 SET -1 2050        # result = -1 (not found)
+2014 SET -1 2040        # result = -1 (not found)
 
 # Check index 4 where 37 is located: array[4]=37, key=37
-2015 CPY 2036 1050      # array[4] = 37
-2016 CPY 2031 1051      # search_key = 37
-2017 SUBI 1050 1051     # 1051 = array[4] - search_key = 37 - 37 = 0
+2015 CPY 2026 2050      # array[4] = 37 (using Thread 1's temp vars)
+2016 CPY 2021 2051      # search_key = 37
+2017 SUBI 2050 2051     # 2051 = array[4] - search_key = 37 - 37 = 0
 
-# Now 1051 contains 0. We want to set result when 1051 == 0.
-# Strategy: If 1051 == 0, then 1051 + 1 == 1 (positive), so JIF won't jump
-# If 1051 != 0, then either 1051 + 1 > 1 (still positive) or 1051 + 1 <= 0 (negative)
+# Now 2051 contains 0. We want to set result when 2051 == 0.
+# Strategy: If 2051 == 0, then 2051 + 1 == 1 (positive), so JIF won't jump
+# If 2051 != 0, then either 2051 + 1 > 1 (still positive) or 2051 + 1 <= 0 (negative)
 
-2018 ADD 1051 1         # 1051 = 0 + 1 = 1 (since difference was 0)
-2019 SET 1 1052         # temp = 1  
-2020 SUBI 1051 1052     # 1052 = 1 - 1 = 0
-2021 JIF 1052 2022      # if 0 <= 0 (TRUE), jump to SET
-2022 SET 4 2050         # Found at index 4!
+2018 ADD 2051 1         # 2051 = 0 + 1 = 1 (since difference was 0)
+2019 SET 1 2052         # temp = 1  
+2020 SUBI 2051 2052     # 2052 = 1 - 1 = 0
+2021 JIF 2052 2022      # if 0 <= 0 (TRUE), jump to SET
+2022 SET 4 2040         # Found at index 4!
 2023 SYSCALL YIELD
 
 # SEARCH COMPLETED
-2024 SYSCALL PRN 5555   # Search completed marker
-2025 SYSCALL PRN 2050   # Print result (should be 4)
+2024 SYSCALL PRN 2801   # Search completed marker
+2025 SYSCALL PRN 2040   # Print result (should be 4)
 2026 SYSCALL YIELD      # YIELD
 2027 SYSCALL HLT        # Thread 1 termination
 
 # ==== THREAD 2: LOOP-BASED COUNTER (Starting at address 3000) ====
-3000 SYSCALL PRN 6666   # Thread 2 started
-3001 SYSCALL PRN 3040   # Print limit (9)
+3000 SYSCALL PRN 3800   # Thread 2 started marker
+3001 SYSCALL PRN 3020   # Print limit (9)
 
 # COUNTER LOOP - Print 0 through 8 (9 numbers total)
-3002 SET 0 3041         # counter = 0
+3002 SET 0 3021         # counter = 0
 # COUNT_LOOP: (address 3003)
-3003 SYSCALL PRN 3041   # Print current counter
+3003 SYSCALL PRN 3021   # Print current counter
 3004 SYSCALL YIELD      # YIELD
-3005 ADD 3041 1         # counter++
-3006 SET 9 1055         # limit = 9
-3007 CPY 1055 1058      # temp = 9
-3008 SUBI 3041 1058     # 1058 = counter - 9
-3009 JIF 1058 3003      # if counter - 9 <= 0 (i.e., counter < 9), continue COUNT_LOOP
+3005 ADD 3021 1         # counter++
+3006 SET 9 3050         # limit = 9 (using Thread 2's temp vars)
+3007 CPY 3050 3051      # temp = 9
+3008 SUBI 3021 3051     # 3051 = counter - 9
+3009 JIF 3051 3003      # if counter - 9 <= 0 (i.e., counter < 9), continue COUNT_LOOP
 
 # COUNTER COMPLETED
-3010 SYSCALL PRN 4444   # Thread 2 completed marker
-3011 SYSCALL PRN 1111   # All threads completed
+3010 SYSCALL PRN 3801   # Thread 2 completed marker
+3011 SYSCALL PRN 3802   # All threads completed marker
 3012 SYSCALL HLT        # Thread 2 termination and system halt
+
+# ==== THREAD 3: INACTIVE (Starting at address 4000) ====
+4000 SYSCALL HLT        # Thread 3 inactive - immediate termination
+
+# ==== THREAD 4: INACTIVE (Starting at address 5000) ====
+5000 SYSCALL HLT        # Thread 4 inactive - immediate termination
+
+# ==== THREAD 5: INACTIVE (Starting at address 6000) ====
+6000 SYSCALL HLT        # Thread 5 inactive - immediate termination
+
+# ==== THREAD 6: INACTIVE (Starting at address 7000) ====
+7000 SYSCALL HLT        # Thread 6 inactive - immediate termination
+
+# ==== THREAD 7: INACTIVE (Starting at address 8000) ====
+8000 SYSCALL HLT        # Thread 7 inactive - immediate termination
+
+# ==== THREAD 8: INACTIVE (Starting at address 9000) ====
+9000 SYSCALL HLT        # Thread 8 inactive - immediate termination
+
+# ==== THREAD 9 (Thread #10 in spec): INACTIVE (Starting at address 10000) ====
+10000 SYSCALL HLT       # Thread 9 (Thread #10) inactive - immediate termination
 
 End Instruction Section 

@@ -146,7 +146,7 @@ public:
         out << endl;
         
         // Print thread table (10 threads, 10 words each, starting at address 100)
-        for (int thread = 0; thread < 6; thread++) {  // Show first 6 threads
+        for (int thread = 0; thread < 10; thread++) {  // Show all 10 threads
             int baseAddr = 100 + (thread * 10);
             if (memory[baseAddr + 3] != 0) { // Only show active threads (state != 0)
                 out << "Thread " << thread << ":" << endl;
@@ -353,10 +353,9 @@ private:
                 // Set current thread to inactive
                 memory[threadBaseAddr + 3] = 0;  // State = 0 (Inactive)
                 
-                // Check if any threads are still active
-                long activeThreads = memory[22];
+                // Check if any threads are still active (check all 10 threads)
                 bool anyActive = false;
-                for (int i = 0; i < activeThreads; i++) {
+                for (int i = 0; i < 10; i++) {  // Check all 10 thread table entries
                     long checkThreadBase = 100 + (i * 10);
                     if (memory[checkThreadBase + 3] != 0) {  // Not inactive
                         anyActive = true;
@@ -368,19 +367,19 @@ private:
                     // All threads terminated - halt the system
                     halted = true;
                 } else {
-                    // Find next active thread (same logic as YIELD)
-                    long nextThread = (currentThread + 1) % activeThreads;
+                    // Find next active thread (check all 10 threads)
+                    long nextThread = (currentThread + 1) % 10;  // Round robin through all 10
                     int attempts = 0;
-                    while (attempts < activeThreads) {
+                    while (attempts < 10) {  // Try all 10 thread slots
                         long checkThreadBase = 100 + (nextThread * 10);
                         if (memory[checkThreadBase + 3] == 1 || memory[checkThreadBase + 3] == 2) {  // Ready or Running
                             break;
                         }
-                        nextThread = (nextThread + 1) % activeThreads;
+                        nextThread = (nextThread + 1) % 10;
                         attempts++;
                     }
                     
-                    if (attempts >= activeThreads) {
+                    if (attempts >= 10) {
                         // No active threads found
                         halted = true;
                     } else {
@@ -401,10 +400,9 @@ private:
                 
                 // 1. Save current thread's context to thread table
                 long currentThread = memory[21];  // Current thread ID (address 21)
-                long activeThreads = memory[22];  // Number of active threads (address 22)
                 
-                // Bounds check
-                if (currentThread < 0 || currentThread >= activeThreads) {
+                // Bounds check for thread ID
+                if (currentThread < 0 || currentThread >= 10) {
                     cout << "Error: Invalid current thread ID: " << currentThread << endl;
                     memory[PC_ADDR]++;
                     return;
@@ -417,22 +415,22 @@ private:
                 memory[threadBaseAddr + 5] = memory[SP_ADDR];      // Save SP
                 memory[threadBaseAddr + 2]++;                      // Increment instruction count for this thread
                 
-                // 2. Find next ready thread (round robin)
-                long nextThread = (currentThread + 1) % activeThreads;
+                // 2. Find next ready thread (round robin through all 10 threads)
+                long nextThread = (currentThread + 1) % 10;  // Round robin through all 10
                 
-                // Skip inactive threads
+                // Skip inactive threads (check all 10 thread slots)
                 int attempts = 0;
-                while (attempts < activeThreads) {
+                while (attempts < 10) {  // Try all 10 thread slots
                     long checkThreadBase = 100 + (nextThread * 10);
                     if (memory[checkThreadBase + 3] == 1 || memory[checkThreadBase + 3] == 2) {  // State 1=Ready or 2=Running
                         break;  // Found ready thread
                     }
-                    nextThread = (nextThread + 1) % activeThreads;
+                    nextThread = (nextThread + 1) % 10;
                     attempts++;
                 }
                 
                 // If no ready threads found, halt
-                if (attempts >= activeThreads) {
+                if (attempts >= 10) {
                     cout << "No ready threads found - halting system" << endl;
                     halted = true;
                     return;
