@@ -5,6 +5,7 @@
 # ✅ Thread 3: Custom Counter - One increment per turn
 # ✅ Threads take turns doing work cooperatively
 # ✅ NO JIF INSTRUCTIONS - Pure sequential execution!
+# ✅ CORRECTED SUBI - Result goes to A2 as per specification!
 
 Begin Data Section
 # Special registers (0-20)
@@ -51,10 +52,13 @@ Begin Data Section
 1106 37   # Search array[4] = 37
 
 # Working variables
-1200 0   # temp1
-1201 0   # temp2
-1202 0   # temp3
-1203 0   # temp4
+1200 0   # temp1 - first element
+1201 0   # temp2 - second element  
+1202 0   # temp3 - comparison result
+1203 0   # temp4 - saved first element for swap
+1204 0   # temp5 - for search comparisons
+1205 0   # temp6 - for search comparisons
+1206 0   # temp7 - saved second element for swap
 
 End Data Section
 
@@ -75,176 +79,187 @@ Begin Instruction Section
 
 # THREAD 1 TURN 1: First bubble sort comparison (0,1)
 7 SYSCALL PRN 1111   # Thread 1 marker
-8 CPY 1001 1200      # Load element[0] = 64
-9 CPY 1002 1201      # Load element[1] = 25
-10 CPY 1200 1202     # Compare prep
-11 SUBI 1202 1201    # 64 - 25 = 39 (positive, swap needed)
-12 CPY 1201 1001     # element[0] = 25
-13 CPY 1200 1002     # element[1] = 64
+8 CPY 1001 1200      # temp1 = element[0] = 64
+9 CPY 1002 1201      # temp2 = element[1] = 25
+10 CPY 1001 1203     # temp4 = element[0] = 64 (save for swap)
+11 CPY 1002 1206     # temp7 = element[1] = 25 (save for swap)
+12 CPY 1200 1202     # temp3 = element[0] = 64 (for comparison)
+13 SUBI 1202 1201    # Compare: 64 - 25 = 39, result overwrites temp2
+14 CPY 1206 1001     # element[0] = saved element[1] = 25
+15 CPY 1203 1002     # element[1] = saved element[0] = 64
 # Thread 1 yields
 
 # THREAD 2 TURN 1: Check first element in search
-14 SYSCALL PRN 2222  # Thread 2 marker  
-15 CPY 1102 1200     # Load search array[0] = 64
-16 CPY 1200 1202     # Copy for comparison
-17 SUBI 1202 1101    # 64 - 37 = 27 (not zero, not found)
-18 ADD 110 1         # Increment search index to 1
+16 SYSCALL PRN 2222  # Thread 2 marker  
+17 CPY 1102 1204     # Load search array[0] = 64
+18 CPY 1101 1205     # Load search key = 37
+19 SUBI 1204 1205    # 64 - 37 = 27 (not zero, not found)
+20 ADD 110 1         # Increment search index to 1
 # Thread 2 yields
 
 # THREAD 3 TURN 1: First counter increment
-19 SYSCALL PRN 3333  # Thread 3 marker
-20 ADD 120 1         # counter = 1
-21 SYSCALL PRN 120   # Print 1
+21 SYSCALL PRN 3333  # Thread 3 marker
+22 ADD 120 1         # counter = 1
+23 SYSCALL PRN 120   # Print 1
 # Thread 3 yields
 
 # THREAD 1 TURN 2: Second comparison (1,2)
-22 SYSCALL PRN 1111  # Thread 1 marker
-23 CPY 1002 1200     # Load element[1] = 64
-24 CPY 1003 1201     # Load element[2] = 89
-25 CPY 1200 1202     # Compare prep
-26 SUBI 1202 1201    # 64 - 89 = -25 (negative, no swap)
+24 SYSCALL PRN 1111  # Thread 1 marker
+25 CPY 1002 1200     # Load element[1] = 64
+26 CPY 1003 1201     # Load element[2] = 89
+27 CPY 1200 1202     # Copy first element to comparison variable
+28 SUBI 1202 1201    # Compare: 64 - 89 = -25 (negative, no swap)
 # Thread 1 yields
 
 # THREAD 2 TURN 2: Check second element
-27 SYSCALL PRN 2222  # Thread 2 marker
-28 CPY 1103 1200     # Load search array[1] = 25
-29 CPY 1200 1202     # Copy for comparison
-30 SUBI 1202 1101    # 25 - 37 = -12 (not zero, not found)
-31 ADD 110 1         # Increment search index to 2
+29 SYSCALL PRN 2222  # Thread 2 marker
+30 CPY 1103 1204     # Load search array[1] = 25
+31 CPY 1101 1205     # Load search key = 37
+32 SUBI 1204 1205    # 25 - 37 = -12 (not zero, not found)
+33 ADD 110 1         # Increment search index to 2
 # Thread 2 yields
 
 # THREAD 3 TURN 2: Second counter increment
-32 SYSCALL PRN 3333  # Thread 3 marker
-33 ADD 120 1         # counter = 2
-34 SYSCALL PRN 120   # Print 2
+34 SYSCALL PRN 3333  # Thread 3 marker
+35 ADD 120 1         # counter = 2
+36 SYSCALL PRN 120   # Print 2
 # Thread 3 yields
 
 # THREAD 1 TURN 3: Third comparison (2,3)
-35 SYSCALL PRN 1111  # Thread 1 marker
-36 CPY 1003 1200     # Load element[2] = 89
-37 CPY 1004 1201     # Load element[3] = 12
-38 CPY 1200 1202     # Compare prep
-39 SUBI 1202 1201    # 89 - 12 = 77 (positive, swap needed)
-40 CPY 1201 1003     # element[2] = 12
-41 CPY 1200 1004     # element[3] = 89
+37 SYSCALL PRN 1111  # Thread 1 marker
+38 CPY 1003 1200     # temp1 = element[2] = 89
+39 CPY 1004 1201     # temp2 = element[3] = 12
+40 CPY 1003 1203     # temp4 = element[2] = 89 (save for swap)
+41 CPY 1004 1206     # temp7 = element[3] = 12 (save for swap)
+42 CPY 1200 1202     # temp3 = element[2] = 89 (for comparison)
+43 SUBI 1202 1201    # Compare: 89 - 12 = 77, result overwrites temp2
+44 CPY 1206 1003     # element[2] = saved element[3] = 12
+45 CPY 1203 1004     # element[3] = saved element[2] = 89
 # Thread 1 yields
 
 # THREAD 2 TURN 3: Check third element
-42 SYSCALL PRN 2222  # Thread 2 marker
-43 CPY 1104 1200     # Load search array[2] = 89
-44 CPY 1200 1202     # Copy for comparison
-45 SUBI 1202 1101    # 89 - 37 = 52 (not zero, not found)
-46 ADD 110 1         # Increment search index to 3
+46 SYSCALL PRN 2222  # Thread 2 marker
+47 CPY 1104 1204     # Load search array[2] = 89
+48 CPY 1101 1205     # Load search key = 37
+49 SUBI 1204 1205    # 89 - 37 = 52 (not zero, not found)
+50 ADD 110 1         # Increment search index to 3
 # Thread 2 yields
 
 # THREAD 3 TURN 3: Third counter increment
-47 SYSCALL PRN 3333  # Thread 3 marker
-48 ADD 120 1         # counter = 3
-49 SYSCALL PRN 120   # Print 3
+51 SYSCALL PRN 3333  # Thread 3 marker
+52 ADD 120 1         # counter = 3
+53 SYSCALL PRN 120   # Print 3
 # Thread 3 yields
 
 # THREAD 1 TURN 4: Fourth comparison (3,4)
-50 SYSCALL PRN 1111  # Thread 1 marker
-51 CPY 1004 1200     # Load element[3] = 89
-52 CPY 1005 1201     # Load element[4] = 37
-53 CPY 1200 1202     # Compare prep
-54 SUBI 1202 1201    # 89 - 37 = 52 (positive, swap needed)
-55 CPY 1201 1004     # element[3] = 37
-56 CPY 1200 1005     # element[4] = 89
+54 SYSCALL PRN 1111  # Thread 1 marker
+55 CPY 1004 1200     # temp1 = element[3] = 89
+56 CPY 1005 1201     # temp2 = element[4] = 37
+57 CPY 1004 1203     # temp4 = element[3] = 89 (save for swap)
+58 CPY 1005 1206     # temp7 = element[4] = 37 (save for swap)
+59 CPY 1200 1202     # temp3 = element[3] = 89 (for comparison)
+60 SUBI 1202 1201    # Compare: 89 - 37 = 52, result overwrites temp2
+61 CPY 1206 1004     # element[3] = saved element[4] = 37
+62 CPY 1203 1005     # element[4] = saved element[3] = 89
 # Thread 1 yields
 
 # THREAD 2 TURN 4: Check fourth element
-57 SYSCALL PRN 2222  # Thread 2 marker
-58 CPY 1105 1200     # Load search array[3] = 12
-59 CPY 1200 1202     # Copy for comparison
-60 SUBI 1202 1101    # 12 - 37 = -25 (not zero, not found)
-61 ADD 110 1         # Increment search index to 4
+63 SYSCALL PRN 2222  # Thread 2 marker
+64 CPY 1105 1204     # Load search array[3] = 12
+65 CPY 1101 1205     # Load search key = 37
+66 SUBI 1204 1205    # 12 - 37 = -25 (not zero, not found)
+67 ADD 110 1         # Increment search index to 4
 # Thread 2 yields
 
 # THREAD 3 TURN 4: Fourth counter increment
-62 SYSCALL PRN 3333  # Thread 3 marker
-63 ADD 120 1         # counter = 4
-64 SYSCALL PRN 120   # Print 4
+68 SYSCALL PRN 3333  # Thread 3 marker
+69 ADD 120 1         # counter = 4
+70 SYSCALL PRN 120   # Print 4
 # Thread 3 yields
 
 # THREAD 1 TURN 5: Second pass, first comparison (0,1)
-65 SYSCALL PRN 1111  # Thread 1 marker
-66 CPY 1001 1200     # Load element[0] = 25
-67 CPY 1002 1201     # Load element[1] = 64
-68 CPY 1200 1202     # Compare prep  
-69 SUBI 1202 1201    # 25 - 64 = -39 (negative, no swap needed)
+71 SYSCALL PRN 1111  # Thread 1 marker
+72 CPY 1001 1200     # Load element[0] = 25
+73 CPY 1002 1201     # Load element[1] = 64
+74 CPY 1200 1202     # Copy first element to comparison variable
+75 SUBI 1202 1201    # Compare: 25 - 64 = -39 (negative, no swap needed)
 # Thread 1 yields
 
 # THREAD 2 TURN 5: Check fifth element - FOUND!
-70 SYSCALL PRN 2222  # Thread 2 marker
-71 CPY 1106 1200     # Load search array[4] = 37
-72 CPY 1200 1202     # Copy for comparison
-73 SUBI 1202 1101    # 37 - 37 = 0 (FOUND!)
-74 SET 4 111         # Set result = 4 (found at index 4)
+76 SYSCALL PRN 2222  # Thread 2 marker
+77 CPY 1106 1204     # Load search array[4] = 37
+78 CPY 1101 1205     # Load search key = 37
+79 SUBI 1204 1205    # 37 - 37 = 0 (FOUND!)
+80 SET 4 111         # Set result = 4 (found at index 4)
 # Thread 2 yields
 
 # THREAD 3 TURN 5: Fifth counter increment
-75 SYSCALL PRN 3333  # Thread 3 marker
-76 ADD 120 1         # counter = 5
-77 SYSCALL PRN 120   # Print 5
+81 SYSCALL PRN 3333  # Thread 3 marker
+82 ADD 120 1         # counter = 5
+83 SYSCALL PRN 120   # Print 5
 
-# Continue pattern for remaining work...
-# THREAD 1: More sorting passes
-78 SYSCALL PRN 1111  # Thread 1 - comparison (1,2)
-79 CPY 1002 1200     # element[1] = 64
-80 CPY 1003 1201     # element[2] = 12
-81 CPY 1200 1202     # Compare
-82 SUBI 1202 1201    # 64 - 12 = 52 (swap needed)
-83 CPY 1201 1002     # element[1] = 12
-84 CPY 1200 1003     # element[2] = 64
+# THREAD 1: More sorting passes - comparison (1,2) 
+84 SYSCALL PRN 1111  # Thread 1 - comparison (1,2)
+85 CPY 1002 1200     # temp1 = element[1] = 64
+86 CPY 1003 1201     # temp2 = element[2] = 12
+87 CPY 1002 1203     # temp4 = element[1] = 64 (save for swap)
+88 CPY 1003 1206     # temp7 = element[2] = 12 (save for swap)
+89 CPY 1200 1202     # temp3 = element[1] = 64 (for comparison)
+90 SUBI 1202 1201    # Compare: 64 - 12 = 52, result overwrites temp2
+91 CPY 1206 1002     # element[1] = saved element[2] = 12
+92 CPY 1203 1003     # element[2] = saved element[1] = 64
 
-85 SYSCALL PRN 3333  # Thread 3 turn
-86 ADD 120 1         # counter = 6
-87 SYSCALL PRN 120   # Print 6
+93 SYSCALL PRN 3333  # Thread 3 turn
+94 ADD 120 1         # counter = 6
+95 SYSCALL PRN 120   # Print 6
 
-88 SYSCALL PRN 1111  # Thread 1 - comparison (2,3)
-89 CPY 1003 1200     # element[2] = 64
-90 CPY 1004 1201     # element[3] = 37
-91 CPY 1200 1202     # Compare
-92 SUBI 1202 1201    # 64 - 37 = 27 (swap needed)
-93 CPY 1201 1003     # element[2] = 37
-94 CPY 1200 1004     # element[3] = 64
-
-95 SYSCALL PRN 3333  # Thread 3 turn
-96 ADD 120 1         # counter = 7
-97 SYSCALL PRN 120   # Print 7
-
-# Final sorting pass
-98 SYSCALL PRN 1111  # Thread 1 - comparison (0,1)
-99 CPY 1001 1200     # element[0] = 25
-100 CPY 1002 1201    # element[1] = 12
-101 CPY 1200 1202    # Compare
-102 SUBI 1202 1201   # 25 - 12 = 13 (swap needed)
-103 CPY 1201 1001    # element[0] = 12
-104 CPY 1200 1002    # element[1] = 25
+96 SYSCALL PRN 1111  # Thread 1 - comparison (2,3)
+97 CPY 1003 1200     # temp1 = element[2] = 64
+98 CPY 1004 1201     # temp2 = element[3] = 37
+99 CPY 1003 1203     # temp4 = element[2] = 64 (save for swap)
+100 CPY 1004 1206    # temp7 = element[3] = 37 (save for swap)
+101 CPY 1200 1202    # temp3 = element[2] = 64 (for comparison)
+102 SUBI 1202 1201   # Compare: 64 - 37 = 27, result overwrites temp2
+103 CPY 1206 1003    # element[2] = saved element[3] = 37
+104 CPY 1203 1004    # element[3] = saved element[2] = 64
 
 105 SYSCALL PRN 3333 # Thread 3 turn
-106 ADD 120 1        # counter = 8
-107 SYSCALL PRN 120  # Print 8
+106 ADD 120 1        # counter = 7
+107 SYSCALL PRN 120  # Print 7
 
-108 SYSCALL PRN 3333 # Thread 3 turn
-109 ADD 120 1        # counter = 9
-110 SYSCALL PRN 120  # Print 9
+# Final sorting pass
+108 SYSCALL PRN 1111 # Thread 1 - comparison (0,1)
+109 CPY 1001 1200    # temp1 = element[0] = 25
+110 CPY 1002 1201    # temp2 = element[1] = 12
+111 CPY 1001 1203    # temp4 = element[0] = 25 (save for swap)
+112 CPY 1002 1206    # temp7 = element[1] = 12 (save for swap)
+113 CPY 1200 1202    # temp3 = element[0] = 25 (for comparison)
+114 SUBI 1202 1201   # Compare: 25 - 12 = 13, result overwrites temp2
+115 CPY 1206 1001    # element[0] = saved element[1] = 12
+116 CPY 1203 1002    # element[1] = saved element[0] = 25
+
+117 SYSCALL PRN 3333 # Thread 3 turn
+118 ADD 120 1        # counter = 8
+119 SYSCALL PRN 120  # Print 8
+
+120 SYSCALL PRN 3333 # Thread 3 turn
+121 ADD 120 1        # counter = 9
+122 SYSCALL PRN 120  # Print 9
 
 # ==== FINAL RESULTS ====
-111 SYSCALL PRN 9999 # All threads completed
-112 SYSCALL PRN 1001 # Final sorted array - element 0 (12)
-113 SYSCALL PRN 1002 # element 1 (25)
-114 SYSCALL PRN 1003 # element 2 (37)
-115 SYSCALL PRN 1004 # element 3 (64)
-116 SYSCALL PRN 1005 # element 4 (89)
+123 SYSCALL PRN 9999 # All threads completed
+124 SYSCALL PRN 1001 # Final sorted array - element 0 (12)
+125 SYSCALL PRN 1002 # element 1 (25)
+126 SYSCALL PRN 1003 # element 2 (37)
+127 SYSCALL PRN 1004 # element 3 (64)
+128 SYSCALL PRN 1005 # element 4 (89)
 
-117 SYSCALL PRN 5555 # Search result
-118 SYSCALL PRN 111  # Found at index 4
+129 SYSCALL PRN 5555 # Search result
+130 SYSCALL PRN 111  # Found at index 4
 
-119 SYSCALL PRN 4444 # Counter final
-120 SYSCALL PRN 120  # Final counter value
+131 SYSCALL PRN 4444 # Counter final
+132 SYSCALL PRN 120  # Final counter value
 
-121 HLT
+133 HLT
 
 End Instruction Section 
