@@ -6,13 +6,14 @@
 #include <stack>
 #include <iomanip>
 #include <stdexcept>
+#include <map>
 
 using namespace std;
 
 class GTUC312CPU {
 private:
     vector<long> memory;
-    vector<string> instructions;
+    map<long, string> instructions; // Changed from vector to map for address-based lookup
     bool halted;
     bool kernelMode;
     
@@ -88,8 +89,10 @@ public:
         if (halted) return;
         
         long pc = memory[PC_ADDR];
-        if (pc < 0 || pc >= static_cast<long>(instructions.size())) {
-            cout << "Error: PC out of bounds: " << pc << endl;
+        
+        // Look up instruction by PC address in the map
+        if (instructions.find(pc) == instructions.end()) {
+            cout << "Error: No instruction at PC address: " << pc << endl;
             halted = true;
             return;
         }
@@ -120,8 +123,8 @@ public:
     
     void printInstructions() const {
         cout << "=== Loaded Instructions ===" << endl;
-        for (size_t i = 0; i < instructions.size(); i++) {
-            cout << setw(3) << i << ": " << instructions[i] << endl;
+        for (const auto& pair : instructions) {
+            cout << "Addr " << setw(4) << pair.first << ": " << pair.second << endl;
         }
         cout << "=========================" << endl;
     }
@@ -186,7 +189,14 @@ private:
     }
     
     void parseInstructionLine(const string& line) {
-        instructions.push_back(line);
+        // Extract instruction address from the line (e.g. "1000 SYSCALL PRN 9999")
+        istringstream iss(line);
+        long address;
+        if (iss >> address) {
+            // Store the rest of the line as the instruction at this address
+            string instruction = line;
+            instructions[address] = instruction;
+        }
     }
     
     void executeInstruction(const string& instruction) {
@@ -316,9 +326,11 @@ private:
         } else if (cmd == "USER") {
             long address;
             iss >> address;
-            kernelMode = false;
+            // Stay in kernel mode to read the address
             checkMemoryAccess(address, false);
-            memory[PC_ADDR] = memory[address]; // Jump to address stored at 'address'
+            long jumpAddress = memory[address]; // Read jump address while in kernel mode
+            kernelMode = false; // Now switch to user mode
+            memory[PC_ADDR] = jumpAddress; // Jump to the address
             
         } else if (cmd == "SYSCALL") {
             string syscallType;
@@ -334,12 +346,114 @@ private:
                 memory[PC_ADDR]++;
                 
             } else if (syscallType == "HLT") {
-                halted = true;
+                // THREAD TERMINATION - Not system halt
+                long currentThread = memory[21];  // Current thread ID
+                long threadBaseAddr = 100 + (currentThread * 10);
+                
+                // Set current thread to inactive
+                memory[threadBaseAddr + 3] = 0;  // State = 0 (Inactive)
+                
+                // Check if any threads are still active
+                long activeThreads = memory[22];
+                bool anyActive = false;
+                for (int i = 0; i < activeThreads; i++) {
+                    long checkThreadBase = 100 + (i * 10);
+                    if (memory[checkThreadBase + 3] != 0) {  // Not inactive
+                        anyActive = true;
+                        break;
+                    }
+                }
+                
+                if (!anyActive) {
+                    // All threads terminated - halt the system
+                    halted = true;
+                } else {
+                    // Find next active thread (same logic as YIELD)
+                    long nextThread = (currentThread + 1) % activeThreads;
+                    int attempts = 0;
+                    while (attempts < activeThreads) {
+                        long checkThreadBase = 100 + (nextThread * 10);
+                        if (memory[checkThreadBase + 3] == 1 || memory[checkThreadBase + 3] == 2) {  // Ready or Running
+                            break;
+                        }
+                        nextThread = (nextThread + 1) % activeThreads;
+                        attempts++;
+                    }
+                    
+                    if (attempts >= activeThreads) {
+                        // No active threads found
+                        halted = true;
+                    } else {
+                        // Switch to next thread
+                        memory[21] = nextThread;
+                        long nextThreadBase = 100 + (nextThread * 10);
+                        memory[nextThreadBase + 3] = 2;  // Set to running
+                        
+                        // Restore context
+                        memory[PC_ADDR] = memory[nextThreadBase + 4];
+                        memory[SP_ADDR] = memory[nextThreadBase + 5];
+                        kernelMode = false;  // Return to user mode
+                    }
+                }
                 
             } else if (syscallType == "YIELD") {
-                // Simple YIELD: just continue to next instruction
-                // This creates cooperative multitasking by allowing other operations
-                memory[PC_ADDR]++;
+                // PROPER THREAD SWITCHING IMPLEMENTATION
+                
+                // 1. Save current thread's context to thread table
+                long currentThread = memory[21];  // Current thread ID (address 21)
+                long activeThreads = memory[22];  // Number of active threads (address 22)
+                
+                // Bounds check
+                if (currentThread < 0 || currentThread >= activeThreads) {
+                    cout << "Error: Invalid current thread ID: " << currentThread << endl;
+                    memory[PC_ADDR]++;
+                    return;
+                }
+                
+                long threadBaseAddr = 100 + (currentThread * 10);  // Each thread uses 10 memory slots
+                
+                // Save current thread's PC and SP to thread table
+                memory[threadBaseAddr + 4] = memory[PC_ADDR] + 1;  // Save next PC
+                memory[threadBaseAddr + 5] = memory[SP_ADDR];      // Save SP
+                memory[threadBaseAddr + 2]++;                      // Increment instruction count for this thread
+                
+                // 2. Find next ready thread (round robin)
+                long nextThread = (currentThread + 1) % activeThreads;
+                
+                // Skip inactive threads
+                int attempts = 0;
+                while (attempts < activeThreads) {
+                    long checkThreadBase = 100 + (nextThread * 10);
+                    if (memory[checkThreadBase + 3] == 1 || memory[checkThreadBase + 3] == 2) {  // State 1=Ready or 2=Running
+                        break;  // Found ready thread
+                    }
+                    nextThread = (nextThread + 1) % activeThreads;
+                    attempts++;
+                }
+                
+                // If no ready threads found, halt
+                if (attempts >= activeThreads) {
+                    cout << "No ready threads found - halting system" << endl;
+                    halted = true;
+                    return;
+                }
+                
+                // 3. Switch to next thread
+                memory[21] = nextThread;  // Update current thread
+                long nextThreadBase = 100 + (nextThread * 10);
+                
+                // Set current thread to ready, next thread to running
+                memory[threadBaseAddr + 3] = 1;      // Current thread -> Ready
+                memory[nextThreadBase + 3] = 2;      // Next thread -> Running
+                
+                // 4. Restore next thread's context
+                memory[PC_ADDR] = memory[nextThreadBase + 4];  // Restore PC
+                memory[SP_ADDR] = memory[nextThreadBase + 5];  // Restore SP
+                
+                // 5. Return to user mode for thread execution
+                kernelMode = false;
+                
+                // Don't increment PC here - we set it to the restored value
             }
             
         } else if (cmd == "HLT") {
