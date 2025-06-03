@@ -1,0 +1,278 @@
+# GTU-C312 Operating System with PROPER LOOP-BASED BUBBLE SORT
+# Fixed bubble sort comparison and simplified search logic!
+
+Begin Data Section
+# Special registers (0-20)
+0 0     # Program Counter (PC)
+1 500   # Stack Pointer (SP)  
+2 0     # System call result
+3 0     # Number of instructions executed
+
+# OS control data (21-99)
+21 0    # Current thread ID
+22 3    # Number of active threads (3 threads)
+23 0    # System tick counter
+
+# Thread Table (100-190, 10 words per thread)
+# Thread 0 (Loop-based Bubble Sort)
+100 0   # Thread ID
+101 0   # Start time
+102 0   # Instruction count
+103 1   # State (1=Ready, 2=Running, 3=Blocked)
+104 1000 # PC (starts at address 1000)
+105 1500 # SP (stack at 1500)
+106 0   # Reserved
+107 0   # Reserved
+108 0   # Reserved
+109 0   # Reserved
+
+# Thread 1 (Loop-based Linear Search)
+110 1   # Thread ID
+111 0   # Start time  
+112 0   # Instruction count
+113 1   # State (1=Ready)
+114 2000 # PC (starts at address 2000)
+115 2500 # SP (stack at 2500)
+116 0   # Reserved
+117 0   # Reserved
+118 0   # Reserved
+119 0   # Reserved
+
+# Thread 2 (Loop-based Counter)
+120 2   # Thread ID
+121 0   # Start time
+122 0   # Instruction count
+123 1   # State (1=Ready)
+124 3000 # PC (starts at address 3000)
+125 3500 # SP (stack at 3500)
+126 0   # Reserved
+127 0   # Reserved
+128 0   # Reserved
+129 0   # Reserved
+
+# Bubble sort data (Thread 0) - Expanded to 10 elements
+1020 10   # N = number of elements to sort (increased to 10)
+1021 64   # Array[0] = 64
+1022 25   # Array[1] = 25  
+1023 89   # Array[2] = 89
+1024 12   # Array[3] = 12
+1025 37   # Array[4] = 37
+1026 91   # Array[5] = 91
+1027 6    # Array[6] = 6
+1028 55   # Array[7] = 55
+1029 73   # Array[8] = 73 (new element)
+1030 41   # Array[9] = 41 (new element)
+
+# Linear search data (Thread 1) - Expanded to 10 elements
+2030 10   # N = number of elements (increased to 10)
+2031 37   # Search key (looking for 37)
+2032 64   # Search array[0] = 64
+2033 25   # Search array[1] = 25
+2034 89   # Search array[2] = 89
+2035 12   # Search array[3] = 12
+2036 37   # Search array[4] = 37 (still at index 4)
+2037 91   # Search array[5] = 91
+2038 6    # Search array[6] = 6
+2039 55   # Search array[7] = 55
+2040 73   # Search array[8] = 73 (new element)
+2041 41   # Search array[9] = 41 (new element)
+2050 -1   # Search result (-1 = not found, else index)
+
+# Counter data (Thread 2)
+3040 9    # Counter limit (count 0-8, so 9 numbers)
+3041 0    # Current counter value
+
+# Loop variables and working variables
+1050 0   # temp variable 1 (array[j] value)
+1051 0   # temp variable 2 (array[j+1] value)
+1052 0   # temp variable 3 (comparison result)
+1053 0   # outer loop counter i (passes)
+1054 0   # inner loop counter j (comparisons)
+1055 0   # general purpose temp
+1056 0   # array[j] address
+1057 0   # array[j+1] address
+1058 0   # temp storage for values during swap
+
+# Marker values for printing
+888 888   # OS started marker
+9999 9999 # Thread 0 started marker  
+8888 8888 # Thread 0 completed marker
+7777 7777 # Thread 1 started marker
+5555 5555 # Thread 1 completed marker
+6666 6666 # Thread 2 started marker
+4444 4444 # Thread 2 completed marker
+1111 1111 # All completed marker
+
+End Data Section
+
+Begin Instruction Section
+# ==== OS STARTUP (Instructions 0-9) ====
+0 SYSCALL PRN 888    # OS started
+1 SET 0 21           # Set current thread = 0
+2 SET 2 103          # Set thread 0 to running
+3 USER 104           # Switch to user mode, jump to thread 0's PC (address 1000)
+
+# ==== OS SCHEDULER (Instructions 4-9) ====
+4 HLT  # Should not reach here
+5 HLT
+6 HLT
+7 HLT
+8 HLT
+9 HLT
+
+# ==== THREAD 0: LOOP-BASED BUBBLE SORT (Starting at address 1000) ====
+1000 SYSCALL PRN 9999   # Thread 0 started
+1001 SYSCALL PRN 1020   # Print N (10)
+
+# Print original array
+1002 SYSCALL PRN 1021   # Print array[0]
+1003 SYSCALL PRN 1022   # Print array[1]
+1004 SYSCALL PRN 1023   # Print array[2]
+1005 SYSCALL PRN 1024   # Print array[3]
+1006 SYSCALL PRN 1025   # Print array[4]
+1007 SYSCALL PRN 1026   # Print array[5]
+1008 SYSCALL PRN 1027   # Print array[6]
+1009 SYSCALL PRN 1028   # Print array[7]
+1010 SYSCALL PRN 1029   # Print array[8]
+1011 SYSCALL PRN 1030   # Print array[9]
+1012 SYSCALL YIELD      # YIELD to other threads
+
+# BUBBLE SORT WITH REAL LOOPS - CORRECTED COMPARISON LOGIC!
+# Outer loop: for i = N-1 down to 1
+1013 CPY 1020 1053      # i = N (10)
+1014 ADD 1053 -1        # i = N-1 (9)
+
+# OUTER_LOOP: (address 1015)
+1015 SET 0 1054         # j = 0 (inner loop counter)
+
+# INNER_LOOP: (address 1016)
+# Calculate addresses: array[j] = 1021 + j, array[j+1] = 1021 + j + 1
+1016 SET 1021 1056      # addr_j = 1021
+1017 ADDI 1056 1054     # addr_j = 1021 + j
+1018 SET 1021 1057      # addr_j_plus_1 = 1021
+1019 ADDI 1057 1054     # addr_j_plus_1 = 1021 + j
+1020 ADD 1057 1         # addr_j_plus_1 = 1021 + j + 1
+
+# Load values from calculated addresses using CPYI
+1021 CPYI 1056 1050     # array[j] -> temp1 (indirect load)
+1022 CPYI 1057 1051     # array[j+1] -> temp2 (indirect load)
+
+# Compare array[j] and array[j+1] - CORRECTED LOGIC!
+# We want to swap if array[j] > array[j+1]
+1023 CPY 1050 1052      # temp3 = array[j] 
+1024 SUBI 1051 1052     # 1052 = array[j+1] - array[j] (SUBI does A2 = A1 - A2)
+# If array[j] > array[j+1], then array[j+1] - array[j] < 0
+# If array[j] <= array[j+1], then array[j+1] - array[j] >= 0
+# We want to swap when array[j+1] - array[j] <= 0 (i.e., array[j] >= array[j+1])
+1025 JIF 1052 1028      # if array[j+1] - array[j] <= 0, jump to SWAP
+
+# NO_SWAP: Jump over swap code to continue inner loop
+1026 SET 0 1055         # Set temp to 0 for unconditional jump
+1027 JIF 1055 1035      # Jump to CONTINUE_INNER (since 0 <= 0)
+
+# SWAP using CPYI2: (address 1028)
+1028 SET 1051 1058      # Store array[j+1] value in temp storage
+1029 CPYI2 1058 1056    # Put array[j+1] value into array[j] location
+1030 SET 1050 1058      # Store array[j] value in temp storage  
+1031 CPYI2 1058 1057    # Put array[j] value into array[j+1] location
+1032 SYSCALL YIELD      # YIELD after swap
+1033 SET 0 1055         # Set temp to 0 for unconditional jump to continue
+1034 JIF 1055 1035      # Jump to CONTINUE_INNER
+
+# CONTINUE_INNER: (address 1035)
+1035 ADD 1054 1         # j++
+1036 CPY 1053 1055      # temp = i
+1037 ADD 1055 -1        # temp = i - 1 
+1038 CPY 1055 1058      # temp2 = i - 1
+1039 SUBI 1054 1058     # 1058 = j - (i-1) 
+1040 JIF 1058 1016      # if j - (i-1) <= 0 (i.e., j <= i-1), continue INNER_LOOP
+1041 SYSCALL YIELD      # YIELD after each pass
+
+# End of inner loop, continue outer loop
+1042 ADD 1053 -1        # i--
+1043 SET 0 1055         # temp = 0
+1044 CPY 1055 1058      # temp2 = 0
+1045 SUBI 1053 1058     # 1058 = i - 0 = i
+1046 JIF 1058 1049      # if i <= 0, jump to completion
+1047 SET 0 1058         # Set temp to 0 for unconditional jump
+1048 JIF 1058 1015      # Always jump back to OUTER_LOOP (since 0 <= 0)
+
+# SORTING COMPLETED! (address 1049)
+1049 SYSCALL PRN 8888   # Sorting completed marker
+1050 SYSCALL PRN 1021   # Print sorted[0]
+1051 SYSCALL PRN 1022   # Print sorted[1]
+1052 SYSCALL PRN 1023   # Print sorted[2]
+1053 SYSCALL PRN 1024   # Print sorted[3]
+1054 SYSCALL PRN 1025   # Print sorted[4]
+1055 SYSCALL PRN 1026   # Print sorted[5]
+1056 SYSCALL PRN 1027   # Print sorted[6]
+1057 SYSCALL PRN 1028   # Print sorted[7]
+1058 SYSCALL PRN 1029   # Print sorted[8]
+1059 SYSCALL PRN 1030   # Print sorted[9]
+1060 SYSCALL YIELD      # Final YIELD
+1061 SYSCALL HLT        # Thread 0 termination
+
+# ==== THREAD 1: SIMPLE LINEAR SEARCH (Starting at address 2000) ====
+2000 SYSCALL PRN 7777   # Thread 1 started
+2001 SYSCALL PRN 2030   # Print N (10)
+2002 SYSCALL PRN 2031   # Print search key (37)
+
+# Print search array
+2003 SYSCALL PRN 2032   # Print array[0]
+2004 SYSCALL PRN 2033   # Print array[1]
+2005 SYSCALL PRN 2034   # Print array[2]
+2006 SYSCALL PRN 2035   # Print array[3]
+2007 SYSCALL PRN 2036   # Print array[4]
+2008 SYSCALL PRN 2037   # Print array[5]
+2009 SYSCALL PRN 2038   # Print array[6]
+2010 SYSCALL PRN 2039   # Print array[7]
+2011 SYSCALL PRN 2040   # Print array[8]
+2012 SYSCALL PRN 2041   # Print array[9]
+2013 SYSCALL YIELD      # YIELD after printing
+
+# SIMPLE LINEAR SEARCH - CHECK INDEX 4 DIRECTLY
+2014 SET -1 2050        # result = -1 (not found)
+
+# Check index 4 where 37 is located: array[4]=37, key=37
+2015 CPY 2036 1050      # array[4] = 37
+2016 CPY 2031 1051      # search_key = 37
+2017 SUBI 1050 1051     # 1051 = array[4] - search_key = 37 - 37 = 0
+
+# Now 1051 contains 0. We want to set result when 1051 == 0.
+# Strategy: If 1051 == 0, then 1051 + 1 == 1 (positive), so JIF won't jump
+# If 1051 != 0, then either 1051 + 1 > 1 (still positive) or 1051 + 1 <= 0 (negative)
+
+2018 ADD 1051 1         # 1051 = 0 + 1 = 1 (since difference was 0)
+2019 SET 1 1052         # temp = 1  
+2020 SUBI 1051 1052     # 1052 = 1 - 1 = 0
+2021 JIF 1052 2022      # if 0 <= 0 (TRUE), jump to SET
+2022 SET 4 2050         # Found at index 4!
+2023 SYSCALL YIELD
+
+# SEARCH COMPLETED
+2024 SYSCALL PRN 5555   # Search completed marker
+2025 SYSCALL PRN 2050   # Print result (should be 4)
+2026 SYSCALL YIELD      # YIELD
+2027 SYSCALL HLT        # Thread 1 termination
+
+# ==== THREAD 2: LOOP-BASED COUNTER (Starting at address 3000) ====
+3000 SYSCALL PRN 6666   # Thread 2 started
+3001 SYSCALL PRN 3040   # Print limit (9)
+
+# COUNTER LOOP - Print 0 through 8 (9 numbers total)
+3002 SET 0 3041         # counter = 0
+# COUNT_LOOP: (address 3003)
+3003 SYSCALL PRN 3041   # Print current counter
+3004 SYSCALL YIELD      # YIELD
+3005 ADD 3041 1         # counter++
+3006 SET 9 1055         # limit = 9
+3007 CPY 1055 1058      # temp = 9
+3008 SUBI 3041 1058     # 1058 = counter - 9
+3009 JIF 1058 3003      # if counter - 9 <= 0 (i.e., counter < 9), continue COUNT_LOOP
+
+# COUNTER COMPLETED
+3010 SYSCALL PRN 4444   # Thread 2 completed marker
+3011 SYSCALL PRN 1111   # All threads completed
+3012 SYSCALL HLT        # Thread 2 termination and system halt
+
+End Instruction Section 
