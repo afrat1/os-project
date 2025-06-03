@@ -334,14 +334,12 @@ private:
                 memory[PC_ADDR]++;
                 
             } else if (syscallType == "HLT") {
-                // For OS integration, set a flag and let OS handle it
-                memory[SYSCALL_RESULT_ADDR] = 2; // Indicate HLT was called
-                memory[PC_ADDR]++; // Let OS handle the actual halt
+                halted = true;
                 
             } else if (syscallType == "YIELD") {
-                // Yield to OS scheduler - will be handled by OS
-                memory[SYSCALL_RESULT_ADDR] = 1; // Indicate YIELD was called
-                memory[PC_ADDR]++; // Continue to next instruction (OS will handle scheduling)
+                // Simple YIELD: just continue to next instruction
+                // This creates cooperative multitasking by allowing other operations
+                memory[PC_ADDR]++;
             }
             
         } else if (cmd == "HLT") {
