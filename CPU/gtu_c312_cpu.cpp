@@ -259,9 +259,9 @@ private:
         } else if (cmd == "SUBI") {
             long addr1, addr2;
             iss >> addr1 >> addr2;
-            checkMemoryAccess(addr1, true);  // addr1 will be written to
-            checkMemoryAccess(addr2, false); // addr2 will be read from
-            memory[addr1] = memory[addr1] - memory[addr2]; // Subtract addr2 from addr1, store in addr1
+            checkMemoryAccess(addr1, false); // addr1 will be read from
+            checkMemoryAccess(addr2, true);  // addr2 will be written to (receives result)
+            memory[addr2] = memory[addr1] - memory[addr2]; // A1 - A2 -> A2 (correct according to project spec)
             memory[PC_ADDR]++;
             
         } else if (cmd == "JIF") {
@@ -341,7 +341,7 @@ private:
             } else if (syscallType == "YIELD") {
                 // Yield to OS scheduler - will be handled by OS
                 memory[SYSCALL_RESULT_ADDR] = 1; // Indicate YIELD was called
-                memory[PC_ADDR] = 2; // Jump back to OS scheduler entry point (instruction 2)
+                memory[PC_ADDR]++; // Continue to next instruction (OS will handle scheduling)
             }
             
         } else if (cmd == "HLT") {
