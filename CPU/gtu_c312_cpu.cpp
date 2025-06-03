@@ -264,21 +264,6 @@ private:
             memory[addr1] = memory[addr1] - memory[addr2]; // Subtract addr2 from addr1, store in addr1
             memory[PC_ADDR]++;
             
-        } else if (cmd == "JIF") {
-            long conditionAddr, jumpAddr;
-            iss >> conditionAddr >> jumpAddr;
-            checkMemoryAccess(conditionAddr, false);
-            if (memory[conditionAddr] <= 0) {
-                memory[PC_ADDR] = jumpAddr;
-            } else {
-                memory[PC_ADDR]++;
-            }
-            
-        } else if (cmd == "JMP") {
-            long jumpAddr;
-            iss >> jumpAddr;
-            memory[PC_ADDR] = jumpAddr;
-            
         } else if (cmd == "PUSH") {
             long address;
             iss >> address;
