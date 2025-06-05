@@ -472,14 +472,13 @@ private:
                 kernelMode = false;
                 
                 // Don't increment PC here - we set it to the restored value
+            } else if (cmd == "HLT") {
+                halted = true;
+                
+            } else {
+                cout << "Error: Unknown instruction: " << cmd << endl;
+                memory[PC_ADDR]++;
             }
-            
-        } else if (cmd == "HLT") {
-            halted = true;
-            
-        } else {
-            cout << "Error: Unknown instruction: " << cmd << endl;
-            memory[PC_ADDR]++;
         }
     }
     
