@@ -68,25 +68,6 @@ run-save: $(CPU_EXECUTABLE)
 	./$(CPU_EXECUTABLE) $(OS_FILE) > results.txt 2>&1
 	@echo "✅ Output saved to results.txt"
 
-# Test different OS versions (if you have multiple)
-.PHONY: test-simple
-test-simple: $(CPU_EXECUTABLE)
-	@if [ -f "others/simple_os.txt" ]; then \
-		echo "🧪 Testing simple OS..."; \
-		./$(CPU_EXECUTABLE) others/simple_os.txt; \
-	else \
-		echo "❌ Simple OS file not found"; \
-	fi
-
-.PHONY: test-scheduler
-test-scheduler: $(CPU_EXECUTABLE)
-	@if [ -f "others/simple_scheduler.txt" ]; then \
-		echo "🧪 Testing scheduler..."; \
-		./$(CPU_EXECUTABLE) others/simple_scheduler.txt -D 3; \
-	else \
-		echo "❌ Scheduler test file not found"; \
-	fi
-
 # Performance test - run and time execution
 .PHONY: performance
 performance: $(CPU_EXECUTABLE)
@@ -98,11 +79,6 @@ performance: $(CPU_EXECUTABLE)
 debug: CXXFLAGS += -DDEBUG -O0
 debug: $(CPU_EXECUTABLE)
 	@echo "✅ Debug build completed!"
-
-.PHONY: release
-release: CXXFLAGS += -DNDEBUG -O3
-release: clean $(CPU_EXECUTABLE)
-	@echo "✅ Release build completed!"
 
 # Clean build artifacts
 .PHONY: clean
@@ -131,7 +107,6 @@ help:
 	@echo "Build Targets:"
 	@echo "  all          - Build the CPU simulator (default)"
 	@echo "  debug        - Build with debug symbols and no optimization"
-	@echo "  release      - Build optimized release version"
 	@echo "  clean        - Remove all build artifacts"
 	@echo ""
 	@echo "Execution Targets:"
@@ -143,8 +118,6 @@ help:
 	@echo "  run-save     - Run and save output to results.txt"
 	@echo ""
 	@echo "Testing Targets:"
-	@echo "  test-simple  - Test with simple OS (if available)"
-	@echo "  test-scheduler - Test scheduler functionality"
 	@echo "  performance  - Run performance test"
 	@echo ""
 	@echo "Analysis Targets:"
