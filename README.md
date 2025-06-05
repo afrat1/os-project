@@ -55,17 +55,20 @@ The simulator can be run with different debug levels:
 # Run with default settings
 make run
 
-# Run with final memory dump only
+# Run with final memory dump only (Debug Level 0)
 make run-final
 
-# Run with memory dump after each instruction
+# Run with memory dump after each instruction (Debug Level 1)
 make run-debug
 
-# Run with step-by-step execution
+# Run with step-by-step execution (Debug Level 2)
 make run-step
 
-# Run with thread table monitoring
+# Run with filtered thread table monitoring (Debug Level 3)
 make run-threads
+
+# Run with full thread table monitoring (Debug Level 3)
+make run-threads-default
 
 # Run and save output to file
 make run-save
