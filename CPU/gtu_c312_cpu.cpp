@@ -16,6 +16,7 @@ private:
     map<long, string> instructions; // Changed from vector to map for address-based lookup
     bool halted;
     bool kernelMode;
+    bool systemCallOccurred; // Flag to track system calls and context switches
     
     // Memory layout constants
     static const int PC_ADDR = 0;
@@ -25,7 +26,7 @@ private:
     static const int KERNEL_BOUNDARY = 1000;
     
 public:
-    GTUC312CPU(int memorySize = 50000) : memory(memorySize, 0), halted(false), kernelMode(true) {
+    GTUC312CPU(int memorySize = 50000) : memory(memorySize, 0), halted(false), kernelMode(true), systemCallOccurred(false) {
         // Initialize special registers
         memory[PC_ADDR] = 0;        // Program Counter
         memory[SP_ADDR] = 500;      // Stack Pointer - start after OS data area
@@ -136,6 +137,13 @@ public:
         cout << "Final PC: " << memory[PC_ADDR] << endl;
         cout << "Kernel mode: " << (kernelMode ? "Yes" : "No") << endl;
         cout << "======================" << endl;
+    }
+    
+    // Check and reset the system call flag for debug mode 3
+    bool checkAndResetSystemCall() {
+        bool occurred = systemCallOccurred;
+        systemCallOccurred = false;
+        return occurred;
     }
     
     void printThreadTable(ostream& out = cerr) const {
@@ -351,11 +359,13 @@ private:
             
             kernelMode = false; // Now switch to user mode
             memory[PC_ADDR] = jumpAddress; // Jump to the address
+            systemCallOccurred = true; // Flag context switch for debug mode 3
             
         } else if (cmd == "SYSCALL") {
             string syscallType;
             iss >> syscallType;
             kernelMode = true; // Switch to kernel mode for system calls
+            systemCallOccurred = true; // Flag system call for debug mode 3
             
             if (syscallType == "PRN") {
                 long address;
@@ -534,7 +544,10 @@ int main(int argc, char* argv[]) {
                 cin.get();
                 break;
             case 3:
-                cpu.printThreadTable(cerr);
+                // Only print thread table after system calls or context switches
+                if (cpu.checkAndResetSystemCall()) {
+                    cpu.printThreadTable(cerr);
+                }
                 break;
         }
     }

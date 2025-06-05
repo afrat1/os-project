@@ -58,7 +58,7 @@ run-step: $(CPU_EXECUTABLE)
 # Run with debug level 3 (thread table monitoring) - filtered output
 .PHONY: run-threads
 run-threads: $(CPU_EXECUTABLE)
-	@echo "🚀 Running OS (thread table monitoring)..."
+	@echo "🚀 Running OS (thread table monitoring - system calls & context switches only)..."
 	@echo "📊 Showing only thread scheduling information:"
 	@echo "----------------------------------------"
 	./$(CPU_EXECUTABLE) $(OS_FILE) -D 3 2>&1 | grep -E "Current Thread:|Thread [0-9]+:|State:|System Tick:"
@@ -66,7 +66,7 @@ run-threads: $(CPU_EXECUTABLE)
 # Run with debug level 3 (thread table monitoring) - unfiltered output
 .PHONY: run-threads-default
 run-threads-default: $(CPU_EXECUTABLE)
-	@echo "🚀 Running OS (thread table monitoring - full output)..."
+	@echo "🚀 Running OS (thread table monitoring - system calls & context switches only)..."
 	@echo "📊 Showing complete thread table information:"
 	@echo "----------------------------------------"
 	./$(CPU_EXECUTABLE) $(OS_FILE) -D 3
@@ -117,8 +117,8 @@ help:
 	@echo "  run-final    - Run with final memory dump only (Debug Level 0)"
 	@echo "  run-debug    - Run with memory dump after each instruction (Debug Level 1)"
 	@echo "  run-step     - Run with step-by-step execution (Debug Level 2)"
-	@echo "  run-threads  - Run with filtered thread table monitoring (Debug Level 3)"
-	@echo "  run-threads-default - Run with full thread table monitoring (Debug Level 3)"
+	@echo "  run-threads  - Run with filtered thread table monitoring during syscalls/context switches (Debug Level 3)"
+	@echo "  run-threads-default - Run with full thread table monitoring during syscalls/context switches (Debug Level 3)"
 	@echo "  run-save     - Run and save output to results.txt"
 	@echo ""
 	@echo "Testing Targets:"
