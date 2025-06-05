@@ -279,7 +279,7 @@ private:
             iss >> addr1 >> addr2;
             checkMemoryAccess(addr1, false); // addr1 will be read from
             checkMemoryAccess(addr2, true);  // addr2 will be written to (receives result)
-            memory[addr2] = memory[addr1] - memory[addr2]; // A1 - A2 -> A2 (correct according to project spec)
+            memory[addr2] = memory[addr1] - memory[addr2]; // A1 - A2 -> A2
             memory[PC_ADDR]++;
             
         } else if (cmd == "JIF") {
@@ -426,7 +426,6 @@ private:
                 }
                 
             } else if (syscallType == "YIELD") {
-                // PROPER THREAD SWITCHING IMPLEMENTATION
                 
                 // 1. Save current thread's context to thread table
                 long currentThread = memory[21];  // Current thread ID (address 21)
@@ -505,7 +504,6 @@ private:
     }
 };
 
-// Simple test program
 int main(int argc, char* argv[]) {
     if (argc < 2) {
         cout << "Usage: " << argv[0] << " <program_file> [-D debug_level]" << endl;
