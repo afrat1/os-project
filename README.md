@@ -34,9 +34,6 @@ The project uses a Makefile for building. Available make targets:
 # Build the CPU simulator (default)
 make
 
-# Build with debug symbols
-make debug
-
 # Clean build artifacts
 make clean
 

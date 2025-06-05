@@ -74,12 +74,6 @@ performance: $(CPU_EXECUTABLE)
 	@echo "⏱️  Performance testing..."
 	time ./$(CPU_EXECUTABLE) $(OS_FILE)
 
-# Build with different optimization levels
-.PHONY: debug
-debug: CXXFLAGS += -DDEBUG -O0
-debug: $(CPU_EXECUTABLE)
-	@echo "✅ Debug build completed!"
-
 # Clean build artifacts
 .PHONY: clean
 clean:
@@ -106,7 +100,6 @@ help:
 	@echo ""
 	@echo "Build Targets:"
 	@echo "  all          - Build the CPU simulator (default)"
-	@echo "  debug        - Build with debug symbols and no optimization"
 	@echo "  clean        - Remove all build artifacts"
 	@echo ""
 	@echo "Execution Targets:"
