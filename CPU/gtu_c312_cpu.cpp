@@ -299,7 +299,13 @@ private:
             iss >> address;
             checkMemoryAccess(address, true);
             long sp = memory[SP_ADDR];
-            if (sp < 500) { // Check if stack is not empty (assuming 500 is initial SP)
+            
+            // Get current thread's initial SP to check if stack is not empty
+            long currentThread = memory[21];  // Current thread ID
+            long threadBaseAddr = 100 + (currentThread * 10);
+            long threadInitialSP = memory[threadBaseAddr + 5];  // Thread's initial SP
+            
+            if (sp < threadInitialSP) { // Check if stack is not empty (SP < initial means items on stack)
                 memory[address] = memory[sp];
                 memory[SP_ADDR] = sp + 1; // Increment SP after pop
             }
@@ -316,7 +322,13 @@ private:
             
         } else if (cmd == "RET") {
             long sp = memory[SP_ADDR];
-            if (sp < 500) { // Check if there's a return address on stack
+            
+            // Get current thread's initial SP to check if there's a return address on stack
+            long currentThread = memory[21];  // Current thread ID
+            long threadBaseAddr = 100 + (currentThread * 10);
+            long threadInitialSP = memory[threadBaseAddr + 5];  // Thread's initial SP
+            
+            if (sp < threadInitialSP) { // Check if there's a return address on stack
                 memory[PC_ADDR] = memory[sp];
                 memory[SP_ADDR] = sp + 1;
             } else {
@@ -329,6 +341,14 @@ private:
             // Stay in kernel mode to read the address
             checkMemoryAccess(address, false);
             long jumpAddress = memory[address]; // Read jump address while in kernel mode
+            
+            // Initialize stack pointer from current thread's table entry
+            long currentThread = memory[21];  // Current thread ID
+            if (currentThread >= 0 && currentThread < 10) {
+                long threadBaseAddr = 100 + (currentThread * 10);  // Each thread uses 10 memory slots
+                memory[SP_ADDR] = memory[threadBaseAddr + 5];  // Load thread's SP from table
+            }
+            
             kernelMode = false; // Now switch to user mode
             memory[PC_ADDR] = jumpAddress; // Jump to the address
             
