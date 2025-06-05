@@ -32,7 +32,7 @@
 This project implements a complete CPU simulator and operating system using the GTU-C312 instruction set architecture. The system features a custom CPU with 15 instructions, a cooperative multitasking operating system supporting up to 10 threads, and comprehensive memory protection mechanisms. The implementation successfully demonstrates key operating system concepts including thread scheduling, context switching, memory management, and system call handling.
 
 ### Key Achievements
-- ✅ **Functional operating system** written in GTU-C312 assembly (457 lines)
+- ✅ **Functional operating system** written in GTU-C312 assembly (468 lines)
 - ✅ **Three working demonstration threads** (sorting, searching, counting)
 - ✅ **Full memory protection** with kernel/user mode separation
 - ✅ **Round-robin thread scheduler** with context switching
@@ -428,7 +428,6 @@ for each element in array:
 - **Search Target**: 37
 - **Expected**: Found at index 4
 - **Actual**: Found at index 4
-- **Status**: ✅ **100% Correct Search**
 
 ### Thread 2: Counter Program
 
@@ -575,7 +574,7 @@ $ make run-threads-default
 ## Complete Test Results
 
 ### Execution Statistics
-- **Total Instructions Executed**: 1,135
+- **Total Instructions Executed**: 1,191
 - **Context Switches**: 47+ successful switches
 - **Thread Completion**: All 3 active threads completed successfully
 - **Memory Efficiency**: Optimal usage within allocated boundaries
@@ -666,7 +665,7 @@ Status: ✅ PERFECT SEQUENTIAL COUNTING
 91
 
 === Execution Complete ===
-=== Memory Contents (Instruction #1135) ===
+=== Memory Contents (Instruction #1191) ===
 PC=1061, SP=1900, SYSCALL_RESULT=0
 Final sorted array at addresses 1021-1030:
 Memory[1021] = 6
@@ -721,7 +720,7 @@ Thread 2:
 
 | Metric | Value | Standard | Status |
 |--------|-------|----------|--------|
-| **Total Instructions** | 1,135 | Expected ~1,000-1,500 | ✅ Optimal |
+| **Total Instructions** | 1,191 | Expected ~1,000-1,500 | ✅ Optimal |
 | **Execution Time** | <1 second | Sub-second target | ✅ Excellent |
 | **Memory Utilization** | ~4% (2,000/50,000) | Appropriate for demo | ✅ Efficient |
 | **Context Switches** | 47+ successful | No failures | ✅ Perfect |
@@ -853,7 +852,7 @@ This GTU-C312 Operating System project represents a **complete and exceptional i
 #### ✅ **Outstanding Results**
 - **100% Algorithm Correctness**: All three algorithms produce perfect results
 - **Zero Defects**: No errors, crashes, or memory violations detected
-- **Optimal Performance**: Efficient execution with 1,135 instructions
+- **Optimal Performance**: Efficient execution with 1,191 instructions
 - **Complete Documentation**: Over 50 pages of professional analysis
 
 #### ✅ **Educational Value**
@@ -931,7 +930,7 @@ Counter Output: 0, 1, 2, 3, 4, 5, 6, 7, 8
 ```
 
 ### Appendix D: Performance Metrics Summary
-- **Total Instructions**: 1,135
+- **Total Instructions**: 1,191
 - **Execution Time**: <1 second
 - **Memory Usage**: 4% of available space
 - **Context Switches**: 47+ successful
@@ -989,7 +988,7 @@ void executeInstruction(const string& instruction) {
 
 #### AI Assistance
 - **ChatGPT**: Used for code optimization suggestions, debugging support, and documentation enhancement
-- **Link**: [ChatGPT Conversation](https://chatgpt.com/) 
+- **Link**: [ChatGPT Conversation](https://chatgpt.com/share/6841cf8c-9904-8011-86a9-2542ef4defc4) 
 ---
 
 **✅ End of Report 🎉**
