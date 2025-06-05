@@ -1,6 +1,3 @@
-Compiling GTU-C312 CPU Simulator...
-g++ -std=c++17 -Wall -Wextra -g -O2 -o bin/gtu_c312_cpu CPU/gtu_c312_cpu.cpp 
-✅ CPU simulator compiled successfully!
 🚀 Running OS (final memory dump only)...
 ./bin/gtu_c312_cpu OS/os.txt -D 0
 Program loaded successfully!
@@ -92,19 +89,32 @@ Addr 2011: 2011 SYSCALL PRN 2030
 Addr 2012: 2012 SYSCALL PRN 2031
 Addr 2013: 2013 SYSCALL YIELD
 Addr 2014: 2014 SET -1 2040
-Addr 2015: 2015 CPY 2026 2050
-Addr 2016: 2016 CPY 2021 2051
-Addr 2017: 2017 SUBI 2050 2051
-Addr 2018: 2018 ADD 2051 1
-Addr 2019: 2019 SET 1 2052
-Addr 2020: 2020 SUBI 2051 2052
-Addr 2021: 2021 JIF 2052 2022
-Addr 2022: 2022 SET 4 2040
-Addr 2023: 2023 SYSCALL YIELD
-Addr 2024: 2024 SYSCALL PRN 2801
-Addr 2025: 2025 SYSCALL PRN 2040
-Addr 2026: 2026 SYSCALL YIELD
-Addr 2027: 2027 SYSCALL HLT
+Addr 2015: 2015 SET 0 2053
+Addr 2016: 2016 SET 2022 2054
+Addr 2017: 2017 ADDI 2054 2053
+Addr 2018: 2018 CPYI 2054 2050
+Addr 2019: 2019 CPY 2050 2051
+Addr 2020: 2020 SUBI 2021 2051
+Addr 2021: 2021 JIF 2051 2024
+Addr 2022: 2022 SET 0 2055
+Addr 2023: 2023 JIF 2055 2030
+Addr 2024: 2024 CPY 2021 2052
+Addr 2025: 2025 SUBI 2050 2052
+Addr 2026: 2026 JIF 2052 2037
+Addr 2027: 2027 SET 0 2055
+Addr 2028: 2028 JIF 2055 2030
+Addr 2030: 2030 ADD 2053 1
+Addr 2031: 2031 SET 10 2055
+Addr 2032: 2032 SUBI 2053 2055
+Addr 2033: 2033 JIF 2055 2016
+Addr 2034: 2034 SET -1 2040
+Addr 2035: 2035 SET 0 2055
+Addr 2036: 2036 JIF 2055 2038
+Addr 2037: 2037 CPY 2053 2040
+Addr 2038: 2038 SYSCALL PRN 2801
+Addr 2039: 2039 SYSCALL PRN 2040
+Addr 2040: 2040 SYSCALL YIELD
+Addr 2041: 2041 SYSCALL HLT
 Addr 3000: 3000 SYSCALL PRN 3800
 Addr 3001: 3001 SYSCALL PRN 3020
 Addr 3002: 3002 SET 0 3021
@@ -157,9 +167,9 @@ Addr 10000: 10000 SYSCALL HLT
 6666
 9
 0
-1
 5555
 4
+1
 2
 3
 4
@@ -183,12 +193,12 @@ Addr 10000: 10000 SYSCALL HLT
 91
 
 === Execution Complete ===
-=== Memory Contents (Instruction #1135) ===
+=== Memory Contents (Instruction #1191) ===
 PC=1061, SP=1900, SYSCALL_RESULT=0
 Memory[   0] =     1061
 Memory[   1] =     1900
 Memory[   2] =        0
-Memory[   3] =     1135
+Memory[   3] =     1191
 Memory[   4] =        0
 Memory[   5] =        0
 Memory[   6] =        0
@@ -211,8 +221,8 @@ Memory[ 102] =       33
 Memory[ 104] =     1061
 Memory[ 105] =     1900
 Memory[ 110] =        1
-Memory[ 112] =        3
-Memory[ 114] =     2027
+Memory[ 112] =        2
+Memory[ 114] =     2041
 Memory[ 115] =     2900
 Memory[ 120] =        2
 Memory[ 122] =       10
@@ -274,7 +284,9 @@ Memory[2030] =       73
 Memory[2031] =       41
 Memory[2040] =        4
 Memory[2050] =       37
-Memory[2051] =        1
+Memory[2053] =        4
+Memory[2054] =     2026
+Memory[2055] =       -6
 Memory[2800] =     7777
 Memory[2801] =     5555
 Memory[3020] =        9
@@ -293,7 +305,7 @@ Memory[9800] =     9001
 Memory[10800] =    10001
 ===============================================
 === CPU Statistics ===
-Instructions executed: 1135
+Instructions executed: 1191
 Stack pointer: 1900
 Final PC: 1061
 Kernel mode: Yes

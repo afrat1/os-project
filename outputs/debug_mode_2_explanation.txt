@@ -1,91 +1,43 @@
-DEBUG MODE 2 - INTERACTIVE STEP-BY-STEP EXECUTION
-=================================================
+GTU-C312 CPU Simulator - Debug Mode 2 Explanation
+==================================================
 
-Description:
-Debug Mode 2 provides interactive step-by-step execution control where the program
-pauses after each CPU instruction and waits for user input before continuing.
+Debug Mode 2: Step-by-Step Execution
+------------------------------------
 
-How to Run:
-$ make run-step
+Debug Mode 2 provides step-by-step execution where the simulator pauses after each instruction
+and waits for user input (Enter key) before proceeding to the next instruction.
+
+Usage:
+------
+make run-step
 OR
-$ ./bin/gtu_c312_cpu OS/os.txt -D 2
-
-Behavior:
-1. The program executes one CPU instruction
-2. Displays complete memory dump showing current state
-3. Prints "Press Enter to continue..."
-4. Waits for user to press Enter key
-5. Continues to next instruction
-6. Repeats until program completion
-
-Interactive Control:
-- Press ENTER: Execute next instruction
-- Ctrl+C: Stop execution at any point
-- User has full control over execution speed
-
-Example Session (First Few Steps):
-=====================================
-
-🚀 Running OS (step-by-step execution)...
 ./bin/gtu_c312_cpu OS/os.txt -D 2
-Program loaded successfully!
-[... instruction listing ...]
 
-=== Starting Execution ===
-888
+Features:
+---------
+- Shows memory state after each instruction
+- Waits for user confirmation before each step
+- Perfect for detailed debugging and instruction tracing
+- Allows examination of how each instruction affects memory
+- Useful for understanding program flow and state changes
 
-=== Memory Contents (Instruction #1) ===
-PC=1, SP=500, SYSCALL_RESULT=0
-Memory[   0] =        1
-Memory[   1] =      500
-Memory[   2] =        0
-Memory[   3] =        1
-[... memory dump ...]
-===============================================
-Press Enter to continue...
+Output Format:
+--------------
+For each instruction execution:
+1. Memory dump showing current state
+2. "Press Enter to continue..." prompt
+3. Waits for user input
 
-[User presses ENTER]
+This mode is ideal for:
+-----------------------
+- Debugging complex algorithms step by step
+- Understanding thread context switching
+- Examining memory changes in detail
+- Educational purposes to see how each instruction works
+- Identifying where programs might be going wrong
 
-=== Memory Contents (Instruction #2) ===
-PC=2, SP=500, SYSCALL_RESULT=0
-Memory[   0] =        2
-Memory[   1] =      500
-Memory[   2] =        0
-Memory[   3] =        2
-Memory[  21] =        0
-[... memory dump ...]
-===============================================
-Press Enter to continue...
+Note: This mode requires interactive input and is not suitable for automated testing
+or output redirection to files.
 
-[User presses ENTER]
-
-[Process continues for each instruction...]
-
-Use Cases:
-==========
-1. Detailed debugging of specific instruction sequences
-2. Understanding exact memory changes after each operation
-3. Analyzing thread context switches step-by-step
-4. Educational purposes to see CPU execution in slow motion
-5. Identifying exact points where issues occur
-
-Benefits:
-=========
-- Complete control over execution speed
-- Detailed insight into every memory change
-- Perfect for debugging specific instruction sequences
-- Allows careful examination of thread switching
-- Educational tool for understanding CPU operation
-
-Note:
-=====
-This mode generates the same memory dumps as Debug Mode 1, but with
-interactive control. The output would be identical to Debug Mode 1
-but with user interaction prompts between each instruction.
-
-To see the actual memory changes, refer to:
-- debug_mode_1_output.txt (automated version)
-- debug_mode_0_output.txt (final state)
-- debug_mode_3_output.txt (thread table changes)
-
-Total Instructions: ~1,135 (would require 1,135 Enter keypresses to complete) 
+For non-interactive debugging, use Debug Mode 1 (memory dump after each instruction)
+or Debug Mode 3 (thread table monitoring during system calls). 

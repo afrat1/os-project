@@ -1,8 +1,3 @@
-# GTU-C312 Operating System with PROPER LOOP-BASED BUBBLE SORT
-# Fixed bubble sort comparison and simplified search logic!
-# CORRECTED MEMORY LAYOUT according to project specification
-# FULL 10-THREAD SUPPORT as per memory layout specification
-
 Begin Data Section
 # ====== REGISTERS AND OS AREA (0-20) ======
 0 0     # Program Counter (PC)
@@ -171,15 +166,15 @@ Begin Data Section
 
 # Thread 0 stack space: 1900-1999 (100 words for stack)
 
-# ====== THREAD 1 DATA (2000-2999) - Linear Search Thread - ACTIVE ======
+# ====== THREAD 1 DATA (2000-2999) - REAL LINEAR SEARCH (Starting at address 2000) ======
 # Thread 1 data and variables - ALL within 2000-2999 range
 2020 10   # N = number of elements
-2021 37   # Search key (looking for 37)
+2021 37   # Search key (looking for 37 - should be at index 4)
 2022 64   # Search array[0] = 64
 2023 25   # Search array[1] = 25
 2024 89   # Search array[2] = 89
 2025 12   # Search array[3] = 12
-2026 37   # Search array[4] = 37 (target element)
+2026 37   # Search array[4] = 37
 2027 91   # Search array[5] = 91
 2028 6    # Search array[6] = 6
 2029 55   # Search array[7] = 55
@@ -188,12 +183,13 @@ Begin Data Section
 2040 -1   # Search result (-1 = not found, else index)
 
 # Thread 1 working variables (2050-2099)
-2050 0   # temp variable 1 (array element value)
+2050 0   # temp variable 1 (current array element value)
 2051 0   # temp variable 2 (search key copy)
 2052 0   # temp variable 3 (comparison result)
-2053 0   # loop counter
-2054 0   # general purpose temp
-2055 0   # general purpose temp 2
+2053 0   # loop counter (i)
+2054 0   # current element address (2022 + i)
+2055 0   # general purpose temp
+2056 0   # general purpose temp 2
 
 # Thread 1 marker values (2800-2899)
 2800 7777 # Thread 1 started marker
@@ -295,7 +291,7 @@ Begin Instruction Section
 1011 SYSCALL PRN 1030   # Print array[9]
 1012 SYSCALL YIELD      # YIELD to other threads
 
-# BUBBLE SORT WITH REAL LOOPS - CORRECTED COMPARISON LOGIC!
+# BUBBLE SORT
 # Outer loop: for i = N-1 down to 1
 1013 CPY 1020 1053      # i = N (10)
 1014 ADD 1053 -1        # i = N-1 (9)
@@ -315,7 +311,7 @@ Begin Instruction Section
 1021 CPYI 1056 1050     # array[j] -> temp1 (indirect load)
 1022 CPYI 1057 1051     # array[j+1] -> temp2 (indirect load)
 
-# Compare array[j] and array[j+1] - CORRECTED LOGIC!
+# Compare array[j] and array[j+1]
 # We want to swap if array[j] > array[j+1]
 1023 CPY 1050 1052      # temp3 = array[j] 
 1024 SUBI 1051 1052     # 1052 = array[j+1] - array[j] (SUBI does A2 = A1 - A2)
@@ -370,7 +366,7 @@ Begin Instruction Section
 1060 SYSCALL YIELD      # Final YIELD
 1061 SYSCALL HLT        # Thread 0 termination
 
-# ==== THREAD 1: SIMPLE LINEAR SEARCH (Starting at address 2000) ====
+# ==== THREAD 1: REAL LINEAR SEARCH (Starting at address 2000) ====
 2000 SYSCALL PRN 2800   # Thread 1 started marker
 2001 SYSCALL PRN 2020   # Print N (10)
 2002 SYSCALL PRN 2021   # Print search key (37)
@@ -388,30 +384,46 @@ Begin Instruction Section
 2012 SYSCALL PRN 2031   # Print array[9]
 2013 SYSCALL YIELD      # YIELD after printing
 
-# SIMPLE LINEAR SEARCH - CHECK INDEX 4 DIRECTLY
+# REAL LINEAR SEARCH ALGORITHM
 2014 SET -1 2040        # result = -1 (not found)
+2015 SET 0 2053         # i = 0 (loop counter)
 
-# Check index 4 where 37 is located: array[4]=37, key=37
-2015 CPY 2026 2050      # array[4] = 37 (using Thread 1's temp vars)
-2016 CPY 2021 2051      # search_key = 37
-2017 SUBI 2050 2051     # 2051 = array[4] - search_key = 37 - 37 = 0
+# SEARCH_LOOP: (address 2016)
+2016 SET 2022 2054      # base_addr = 2022 (start of array)
+2017 ADDI 2054 2053     # current_addr = 2022 + i
+2018 CPYI 2054 2050     # array[i] -> temp (load current element)
+2019 CPY 2050 2051      # temp1 = array[i] (backup for equality check)
+2020 SUBI 2021 2051     # temp1 = search_key - array[i] (result in 2051)
+2021 JIF 2051 2024      # if search_key - array[i] <= 0, check reverse
+2022 SET 0 2055         # Not equal, continue loop
+2023 JIF 2055 2030      # Jump to CONTINUE_LOOP
 
-# Now 2051 contains 0. We want to set result when 2051 == 0.
-# Strategy: If 2051 == 0, then 2051 + 1 == 1 (positive), so JIF won't jump
-# If 2051 != 0, then either 2051 + 1 > 1 (still positive) or 2051 + 1 <= 0 (negative)
+# Check reverse direction for exact equality (address 2024)
+2024 CPY 2021 2052      # temp2 = search_key
+2025 SUBI 2050 2052     # temp2 = array[i] - search_key (result in 2052)
+2026 JIF 2052 2037      # if array[i] - search_key <= 0, then FOUND!
+2027 SET 0 2055         # Not equal, continue loop
+2028 JIF 2055 2030      # Jump to CONTINUE_LOOP
 
-2018 ADD 2051 1         # 2051 = 0 + 1 = 1 (since difference was 0)
-2019 SET 1 2052         # temp = 1  
-2020 SUBI 2051 2052     # 2052 = 1 - 1 = 0
-2021 JIF 2052 2022      # if 0 <= 0 (TRUE), jump to SET
-2022 SET 4 2040         # Found at index 4!
-2023 SYSCALL YIELD
+# CONTINUE_LOOP: (address 2030)
+2030 ADD 2053 1         # i++
+2031 SET 10 2055        # N = 10
+2032 SUBI 2053 2055     # temp = i - N (result in 2055)
+2033 JIF 2055 2016      # if i - N <= 0 (i <= N), continue SEARCH_LOOP
 
-# SEARCH COMPLETED
-2024 SYSCALL PRN 2801   # Search completed marker
-2025 SYSCALL PRN 2040   # Print result (should be 4)
-2026 SYSCALL YIELD      # YIELD
-2027 SYSCALL HLT        # Thread 1 termination
+# NOT FOUND: (address 2034)
+2034 SET -1 2040        # result = -1 (not found)
+2035 SET 0 2055         # temp = 0 for unconditional jump
+2036 JIF 2055 2038      # Jump to SEARCH_COMPLETED
+
+# FOUND: (address 2037)
+2037 CPY 2053 2040      # result = i (current index)
+
+# SEARCH_COMPLETED: (address 2038)
+2038 SYSCALL PRN 2801   # Search completed marker
+2039 SYSCALL PRN 2040   # Print result
+2040 SYSCALL YIELD      # YIELD
+2041 SYSCALL HLT        # Thread 1 termination
 
 # ==== THREAD 2: LOOP-BASED COUNTER (Starting at address 3000) ====
 3000 SYSCALL PRN 3800   # Thread 2 started marker
