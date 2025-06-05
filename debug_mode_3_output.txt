@@ -1,0 +1,2520 @@
+🚀 Running OS (thread table monitoring - system calls & context switches only)...
+📊 Showing complete thread table information:
+----------------------------------------
+./bin/gtu_c312_cpu OS/os.txt -D 3
+Program loaded successfully!
+=== Loaded Instructions ===
+Addr    0: 0 SYSCALL PRN 888
+Addr    1: 1 SET 0 21
+Addr    2: 2 SET 2 103
+Addr    3: 3 USER 104
+Addr    4: 4 HLT
+Addr    5: 5 HLT
+Addr    6: 6 HLT
+Addr    7: 7 HLT
+Addr    8: 8 HLT
+Addr    9: 9 HLT
+Addr 1000: 1000 SYSCALL PRN 1800
+Addr 1001: 1001 SYSCALL PRN 1020
+Addr 1002: 1002 SYSCALL PRN 1021
+Addr 1003: 1003 SYSCALL PRN 1022
+Addr 1004: 1004 SYSCALL PRN 1023
+Addr 1005: 1005 SYSCALL PRN 1024
+Addr 1006: 1006 SYSCALL PRN 1025
+Addr 1007: 1007 SYSCALL PRN 1026
+Addr 1008: 1008 SYSCALL PRN 1027
+Addr 1009: 1009 SYSCALL PRN 1028
+Addr 1010: 1010 SYSCALL PRN 1029
+Addr 1011: 1011 SYSCALL PRN 1030
+Addr 1012: 1012 SYSCALL YIELD
+Addr 1013: 1013 CPY 1020 1053
+Addr 1014: 1014 ADD 1053 -1
+Addr 1015: 1015 SET 0 1054
+Addr 1016: 1016 SET 1021 1056
+Addr 1017: 1017 ADDI 1056 1054
+Addr 1018: 1018 SET 1021 1057
+Addr 1019: 1019 ADDI 1057 1054
+Addr 1020: 1020 ADD 1057 1
+Addr 1021: 1021 CPYI 1056 1050
+Addr 1022: 1022 CPYI 1057 1051
+Addr 1023: 1023 CPY 1050 1052
+Addr 1024: 1024 SUBI 1051 1052
+Addr 1025: 1025 JIF 1052 1028
+Addr 1026: 1026 SET 0 1055
+Addr 1027: 1027 JIF 1055 1035
+Addr 1028: 1028 SET 1051 1058
+Addr 1029: 1029 CPYI2 1058 1056
+Addr 1030: 1030 SET 1050 1058
+Addr 1031: 1031 CPYI2 1058 1057
+Addr 1032: 1032 SYSCALL YIELD
+Addr 1033: 1033 SET 0 1055
+Addr 1034: 1034 JIF 1055 1035
+Addr 1035: 1035 ADD 1054 1
+Addr 1036: 1036 CPY 1053 1055
+Addr 1037: 1037 ADD 1055 -1
+Addr 1038: 1038 CPY 1055 1058
+Addr 1039: 1039 SUBI 1054 1058
+Addr 1040: 1040 JIF 1058 1016
+Addr 1041: 1041 SYSCALL YIELD
+Addr 1042: 1042 ADD 1053 -1
+Addr 1043: 1043 SET 0 1055
+Addr 1044: 1044 CPY 1055 1058
+Addr 1045: 1045 SUBI 1053 1058
+Addr 1046: 1046 JIF 1058 1049
+Addr 1047: 1047 SET 0 1058
+Addr 1048: 1048 JIF 1058 1015
+Addr 1049: 1049 SYSCALL PRN 1801
+Addr 1050: 1050 SYSCALL PRN 1021
+Addr 1051: 1051 SYSCALL PRN 1022
+Addr 1052: 1052 SYSCALL PRN 1023
+Addr 1053: 1053 SYSCALL PRN 1024
+Addr 1054: 1054 SYSCALL PRN 1025
+Addr 1055: 1055 SYSCALL PRN 1026
+Addr 1056: 1056 SYSCALL PRN 1027
+Addr 1057: 1057 SYSCALL PRN 1028
+Addr 1058: 1058 SYSCALL PRN 1029
+Addr 1059: 1059 SYSCALL PRN 1030
+Addr 1060: 1060 SYSCALL YIELD
+Addr 1061: 1061 SYSCALL HLT
+Addr 2000: 2000 SYSCALL PRN 2800
+Addr 2001: 2001 SYSCALL PRN 2020
+Addr 2002: 2002 SYSCALL PRN 2021
+Addr 2003: 2003 SYSCALL PRN 2022
+Addr 2004: 2004 SYSCALL PRN 2023
+Addr 2005: 2005 SYSCALL PRN 2024
+Addr 2006: 2006 SYSCALL PRN 2025
+Addr 2007: 2007 SYSCALL PRN 2026
+Addr 2008: 2008 SYSCALL PRN 2027
+Addr 2009: 2009 SYSCALL PRN 2028
+Addr 2010: 2010 SYSCALL PRN 2029
+Addr 2011: 2011 SYSCALL PRN 2030
+Addr 2012: 2012 SYSCALL PRN 2031
+Addr 2013: 2013 SYSCALL YIELD
+Addr 2014: 2014 SET -1 2040
+Addr 2015: 2015 CPY 2026 2050
+Addr 2016: 2016 CPY 2021 2051
+Addr 2017: 2017 SUBI 2050 2051
+Addr 2018: 2018 ADD 2051 1
+Addr 2019: 2019 SET 1 2052
+Addr 2020: 2020 SUBI 2051 2052
+Addr 2021: 2021 JIF 2052 2022
+Addr 2022: 2022 SET 4 2040
+Addr 2023: 2023 SYSCALL YIELD
+Addr 2024: 2024 SYSCALL PRN 2801
+Addr 2025: 2025 SYSCALL PRN 2040
+Addr 2026: 2026 SYSCALL YIELD
+Addr 2027: 2027 SYSCALL HLT
+Addr 3000: 3000 SYSCALL PRN 3800
+Addr 3001: 3001 SYSCALL PRN 3020
+Addr 3002: 3002 SET 0 3021
+Addr 3003: 3003 SYSCALL PRN 3021
+Addr 3004: 3004 SYSCALL YIELD
+Addr 3005: 3005 ADD 3021 1
+Addr 3006: 3006 SET 9 3050
+Addr 3007: 3007 CPY 3050 3051
+Addr 3008: 3008 SUBI 3021 3051
+Addr 3009: 3009 JIF 3051 3003
+Addr 3010: 3010 SYSCALL PRN 3801
+Addr 3011: 3011 SYSCALL PRN 3802
+Addr 3012: 3012 SYSCALL HLT
+Addr 4000: 4000 SYSCALL HLT
+Addr 5000: 5000 SYSCALL HLT
+Addr 6000: 6000 SYSCALL HLT
+Addr 7000: 7000 SYSCALL HLT
+Addr 8000: 8000 SYSCALL HLT
+Addr 9000: 9000 SYSCALL HLT
+Addr 10000: 10000 SYSCALL HLT
+=========================
+
+=== Starting Execution ===
+888
+=== Thread Table (Instruction #1) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 1000
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #4) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 1000
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+9999
+=== Thread Table (Instruction #5) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 1000
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+10
+=== Thread Table (Instruction #6) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 1000
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+64
+=== Thread Table (Instruction #7) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 1000
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+25
+=== Thread Table (Instruction #8) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 1000
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+89
+=== Thread Table (Instruction #9) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 1000
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+12
+=== Thread Table (Instruction #10) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 1000
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+37
+=== Thread Table (Instruction #11) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 1000
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+91
+=== Thread Table (Instruction #12) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 1000
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+6
+=== Thread Table (Instruction #13) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 1000
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+55
+=== Thread Table (Instruction #14) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 1000
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+73
+=== Thread Table (Instruction #15) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 1000
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+41
+=== Thread Table (Instruction #16) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 1000
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #17) ===
+Current Thread: 1
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 1013
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+7777
+=== Thread Table (Instruction #18) ===
+Current Thread: 1
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 1013
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+10
+=== Thread Table (Instruction #19) ===
+Current Thread: 1
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 1013
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+37
+=== Thread Table (Instruction #20) ===
+Current Thread: 1
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 1013
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+64
+=== Thread Table (Instruction #21) ===
+Current Thread: 1
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 1013
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+25
+=== Thread Table (Instruction #22) ===
+Current Thread: 1
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 1013
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+89
+=== Thread Table (Instruction #23) ===
+Current Thread: 1
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 1013
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+12
+=== Thread Table (Instruction #24) ===
+Current Thread: 1
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 1013
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+37
+=== Thread Table (Instruction #25) ===
+Current Thread: 1
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 1013
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+91
+=== Thread Table (Instruction #26) ===
+Current Thread: 1
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 1013
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+6
+=== Thread Table (Instruction #27) ===
+Current Thread: 1
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 1013
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+55
+=== Thread Table (Instruction #28) ===
+Current Thread: 1
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 1013
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+73
+=== Thread Table (Instruction #29) ===
+Current Thread: 1
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 1013
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+41
+=== Thread Table (Instruction #30) ===
+Current Thread: 1
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 1013
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 2000
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 1 (Ready)
+  PC: 3000
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #31) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 1013
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 2014
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 3000
+  SP: 3900
+
+=============================================
+6666
+=== Thread Table (Instruction #32) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 1013
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 2014
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 3000
+  SP: 3900
+
+=============================================
+9
+=== Thread Table (Instruction #33) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 1013
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 2014
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 3000
+  SP: 3900
+
+=============================================
+0
+=== Thread Table (Instruction #35) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 1013
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 2014
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 0
+  State: 2 (Running)
+  PC: 3000
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #36) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 1
+  State: 2 (Running)
+  PC: 1013
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 2014
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #54) ===
+Current Thread: 1
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 2
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 1
+  State: 2 (Running)
+  PC: 2014
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 1
+  State: 1 (Ready)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #64) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 2
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 2
+  State: 1 (Ready)
+  PC: 2024
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 1
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+1
+=== Thread Table (Instruction #70) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 2
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 2
+  State: 1 (Ready)
+  PC: 2024
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 1
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #71) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 2
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 2
+  State: 1 (Ready)
+  PC: 2024
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 2
+  State: 1 (Ready)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #112) ===
+Current Thread: 1
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 3
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 2
+  State: 2 (Running)
+  PC: 2024
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 2
+  State: 1 (Ready)
+  PC: 3005
+  SP: 3900
+
+=============================================
+5555
+=== Thread Table (Instruction #113) ===
+Current Thread: 1
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 3
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 2
+  State: 2 (Running)
+  PC: 2024
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 2
+  State: 1 (Ready)
+  PC: 3005
+  SP: 3900
+
+=============================================
+4
+=== Thread Table (Instruction #114) ===
+Current Thread: 1
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 3
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 2
+  State: 2 (Running)
+  PC: 2024
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 2
+  State: 1 (Ready)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #115) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 3
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 3
+  State: 1 (Ready)
+  PC: 2027
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 2
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+2
+=== Thread Table (Instruction #121) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 3
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 3
+  State: 1 (Ready)
+  PC: 2027
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 2
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #122) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 3
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 3
+  State: 1 (Ready)
+  PC: 2027
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 3
+  State: 1 (Ready)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #145) ===
+Current Thread: 1
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 4
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 1:
+  ID: 1
+  Start Time: 0
+  Instr Count: 3
+  State: 2 (Running)
+  PC: 2027
+  SP: 2900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 3
+  State: 1 (Ready)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #146) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 4
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 3
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+3
+=== Thread Table (Instruction #152) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 4
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 3
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #153) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 4
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 4
+  State: 1 (Ready)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #194) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 5
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 4
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+4
+=== Thread Table (Instruction #200) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 5
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 4
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #201) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 5
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 5
+  State: 1 (Ready)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #224) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 6
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 5
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+5
+=== Thread Table (Instruction #230) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 6
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 5
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #231) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 6
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 6
+  State: 1 (Ready)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #254) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 7
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 6
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+6
+=== Thread Table (Instruction #260) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 7
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 6
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #261) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 7
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 7
+  State: 1 (Ready)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #284) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 8
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 7
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+7
+=== Thread Table (Instruction #290) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 8
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 7
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #291) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 8
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 8
+  State: 1 (Ready)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #300) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 9
+  State: 1 (Ready)
+  PC: 1042
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 8
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+8
+=== Thread Table (Instruction #306) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 9
+  State: 1 (Ready)
+  PC: 1042
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 8
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #307) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 9
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 9
+  State: 1 (Ready)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #348) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 10
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 9
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+9
+=== Thread Table (Instruction #354) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 10
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 9
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #355) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 10
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 10
+  State: 1 (Ready)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #378) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 11
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 10
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+4444
+=== Thread Table (Instruction #384) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 11
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 10
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+1111
+=== Thread Table (Instruction #385) ===
+Current Thread: 2
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 11
+  State: 1 (Ready)
+  PC: 1033
+  SP: 1900
+
+Thread 2:
+  ID: 2
+  Start Time: 0
+  Instr Count: 10
+  State: 2 (Running)
+  PC: 3005
+  SP: 3900
+
+=============================================
+=== Thread Table (Instruction #386) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 11
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #427) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 12
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #450) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 13
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #473) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 14
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #496) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 15
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #505) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 16
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #528) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 17
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #587) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 18
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #610) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 19
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #651) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 20
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #660) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 21
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #719) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 22
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #778) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 23
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #787) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 24
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #828) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 25
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #887) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 26
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #896) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 27
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #919) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 28
+  State: 2 (Running)
+  PC: 1033
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #982) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 29
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #1045) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 30
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #1090) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 31
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #1117) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 32
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+=============================================
+8888
+=== Thread Table (Instruction #1123) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 32
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+=============================================
+6
+=== Thread Table (Instruction #1124) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 32
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+=============================================
+12
+=== Thread Table (Instruction #1125) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 32
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+=============================================
+25
+=== Thread Table (Instruction #1126) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 32
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+=============================================
+37
+=== Thread Table (Instruction #1127) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 32
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+=============================================
+41
+=== Thread Table (Instruction #1128) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 32
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+=============================================
+55
+=== Thread Table (Instruction #1129) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 32
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+=============================================
+64
+=== Thread Table (Instruction #1130) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 32
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+=============================================
+73
+=== Thread Table (Instruction #1131) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 32
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+=============================================
+89
+=== Thread Table (Instruction #1132) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 32
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+=============================================
+91
+=== Thread Table (Instruction #1133) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 32
+  State: 2 (Running)
+  PC: 1042
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #1134) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+Thread 0:
+  ID: 0
+  Start Time: 0
+  Instr Count: 33
+  State: 2 (Running)
+  PC: 1061
+  SP: 1900
+
+=============================================
+=== Thread Table (Instruction #1135) ===
+Current Thread: 0
+Active Threads: 3
+System Tick: 0
+
+=============================================
+
+=== Execution Complete ===
+=== CPU Statistics ===
+Instructions executed: 1135
+Stack pointer: 1900
+Final PC: 1061
+Kernel mode: Yes
+======================

@@ -1,0 +1,300 @@
+Compiling GTU-C312 CPU Simulator...
+g++ -std=c++17 -Wall -Wextra -g -O2 -o bin/gtu_c312_cpu CPU/gtu_c312_cpu.cpp 
+✅ CPU simulator compiled successfully!
+🚀 Running OS (final memory dump only)...
+./bin/gtu_c312_cpu OS/os.txt -D 0
+Program loaded successfully!
+=== Loaded Instructions ===
+Addr    0: 0 SYSCALL PRN 888
+Addr    1: 1 SET 0 21
+Addr    2: 2 SET 2 103
+Addr    3: 3 USER 104
+Addr    4: 4 HLT
+Addr    5: 5 HLT
+Addr    6: 6 HLT
+Addr    7: 7 HLT
+Addr    8: 8 HLT
+Addr    9: 9 HLT
+Addr 1000: 1000 SYSCALL PRN 1800
+Addr 1001: 1001 SYSCALL PRN 1020
+Addr 1002: 1002 SYSCALL PRN 1021
+Addr 1003: 1003 SYSCALL PRN 1022
+Addr 1004: 1004 SYSCALL PRN 1023
+Addr 1005: 1005 SYSCALL PRN 1024
+Addr 1006: 1006 SYSCALL PRN 1025
+Addr 1007: 1007 SYSCALL PRN 1026
+Addr 1008: 1008 SYSCALL PRN 1027
+Addr 1009: 1009 SYSCALL PRN 1028
+Addr 1010: 1010 SYSCALL PRN 1029
+Addr 1011: 1011 SYSCALL PRN 1030
+Addr 1012: 1012 SYSCALL YIELD
+Addr 1013: 1013 CPY 1020 1053
+Addr 1014: 1014 ADD 1053 -1
+Addr 1015: 1015 SET 0 1054
+Addr 1016: 1016 SET 1021 1056
+Addr 1017: 1017 ADDI 1056 1054
+Addr 1018: 1018 SET 1021 1057
+Addr 1019: 1019 ADDI 1057 1054
+Addr 1020: 1020 ADD 1057 1
+Addr 1021: 1021 CPYI 1056 1050
+Addr 1022: 1022 CPYI 1057 1051
+Addr 1023: 1023 CPY 1050 1052
+Addr 1024: 1024 SUBI 1051 1052
+Addr 1025: 1025 JIF 1052 1028
+Addr 1026: 1026 SET 0 1055
+Addr 1027: 1027 JIF 1055 1035
+Addr 1028: 1028 SET 1051 1058
+Addr 1029: 1029 CPYI2 1058 1056
+Addr 1030: 1030 SET 1050 1058
+Addr 1031: 1031 CPYI2 1058 1057
+Addr 1032: 1032 SYSCALL YIELD
+Addr 1033: 1033 SET 0 1055
+Addr 1034: 1034 JIF 1055 1035
+Addr 1035: 1035 ADD 1054 1
+Addr 1036: 1036 CPY 1053 1055
+Addr 1037: 1037 ADD 1055 -1
+Addr 1038: 1038 CPY 1055 1058
+Addr 1039: 1039 SUBI 1054 1058
+Addr 1040: 1040 JIF 1058 1016
+Addr 1041: 1041 SYSCALL YIELD
+Addr 1042: 1042 ADD 1053 -1
+Addr 1043: 1043 SET 0 1055
+Addr 1044: 1044 CPY 1055 1058
+Addr 1045: 1045 SUBI 1053 1058
+Addr 1046: 1046 JIF 1058 1049
+Addr 1047: 1047 SET 0 1058
+Addr 1048: 1048 JIF 1058 1015
+Addr 1049: 1049 SYSCALL PRN 1801
+Addr 1050: 1050 SYSCALL PRN 1021
+Addr 1051: 1051 SYSCALL PRN 1022
+Addr 1052: 1052 SYSCALL PRN 1023
+Addr 1053: 1053 SYSCALL PRN 1024
+Addr 1054: 1054 SYSCALL PRN 1025
+Addr 1055: 1055 SYSCALL PRN 1026
+Addr 1056: 1056 SYSCALL PRN 1027
+Addr 1057: 1057 SYSCALL PRN 1028
+Addr 1058: 1058 SYSCALL PRN 1029
+Addr 1059: 1059 SYSCALL PRN 1030
+Addr 1060: 1060 SYSCALL YIELD
+Addr 1061: 1061 SYSCALL HLT
+Addr 2000: 2000 SYSCALL PRN 2800
+Addr 2001: 2001 SYSCALL PRN 2020
+Addr 2002: 2002 SYSCALL PRN 2021
+Addr 2003: 2003 SYSCALL PRN 2022
+Addr 2004: 2004 SYSCALL PRN 2023
+Addr 2005: 2005 SYSCALL PRN 2024
+Addr 2006: 2006 SYSCALL PRN 2025
+Addr 2007: 2007 SYSCALL PRN 2026
+Addr 2008: 2008 SYSCALL PRN 2027
+Addr 2009: 2009 SYSCALL PRN 2028
+Addr 2010: 2010 SYSCALL PRN 2029
+Addr 2011: 2011 SYSCALL PRN 2030
+Addr 2012: 2012 SYSCALL PRN 2031
+Addr 2013: 2013 SYSCALL YIELD
+Addr 2014: 2014 SET -1 2040
+Addr 2015: 2015 CPY 2026 2050
+Addr 2016: 2016 CPY 2021 2051
+Addr 2017: 2017 SUBI 2050 2051
+Addr 2018: 2018 ADD 2051 1
+Addr 2019: 2019 SET 1 2052
+Addr 2020: 2020 SUBI 2051 2052
+Addr 2021: 2021 JIF 2052 2022
+Addr 2022: 2022 SET 4 2040
+Addr 2023: 2023 SYSCALL YIELD
+Addr 2024: 2024 SYSCALL PRN 2801
+Addr 2025: 2025 SYSCALL PRN 2040
+Addr 2026: 2026 SYSCALL YIELD
+Addr 2027: 2027 SYSCALL HLT
+Addr 3000: 3000 SYSCALL PRN 3800
+Addr 3001: 3001 SYSCALL PRN 3020
+Addr 3002: 3002 SET 0 3021
+Addr 3003: 3003 SYSCALL PRN 3021
+Addr 3004: 3004 SYSCALL YIELD
+Addr 3005: 3005 ADD 3021 1
+Addr 3006: 3006 SET 9 3050
+Addr 3007: 3007 CPY 3050 3051
+Addr 3008: 3008 SUBI 3021 3051
+Addr 3009: 3009 JIF 3051 3003
+Addr 3010: 3010 SYSCALL PRN 3801
+Addr 3011: 3011 SYSCALL PRN 3802
+Addr 3012: 3012 SYSCALL HLT
+Addr 4000: 4000 SYSCALL HLT
+Addr 5000: 5000 SYSCALL HLT
+Addr 6000: 6000 SYSCALL HLT
+Addr 7000: 7000 SYSCALL HLT
+Addr 8000: 8000 SYSCALL HLT
+Addr 9000: 9000 SYSCALL HLT
+Addr 10000: 10000 SYSCALL HLT
+=========================
+
+=== Starting Execution ===
+888
+9999
+10
+64
+25
+89
+12
+37
+91
+6
+55
+73
+41
+7777
+10
+37
+64
+25
+89
+12
+37
+91
+6
+55
+73
+41
+6666
+9
+0
+1
+5555
+4
+2
+3
+4
+5
+6
+7
+8
+9
+4444
+1111
+8888
+6
+12
+25
+37
+41
+55
+64
+73
+89
+91
+
+=== Execution Complete ===
+=== Memory Contents (Instruction #1135) ===
+PC=1061, SP=1900, SYSCALL_RESULT=0
+Memory[   0] =     1061
+Memory[   1] =     1900
+Memory[   2] =        0
+Memory[   3] =     1135
+Memory[   4] =        0
+Memory[   5] =        0
+Memory[   6] =        0
+Memory[   7] =        0
+Memory[   8] =        0
+Memory[   9] =        0
+Memory[  10] =        0
+Memory[  11] =        0
+Memory[  12] =        0
+Memory[  13] =        0
+Memory[  14] =        0
+Memory[  15] =        0
+Memory[  16] =        0
+Memory[  17] =        0
+Memory[  18] =        0
+Memory[  19] =        0
+Memory[  20] =        0
+Memory[  22] =        3
+Memory[ 102] =       33
+Memory[ 104] =     1061
+Memory[ 105] =     1900
+Memory[ 110] =        1
+Memory[ 112] =        3
+Memory[ 114] =     2027
+Memory[ 115] =     2900
+Memory[ 120] =        2
+Memory[ 122] =       10
+Memory[ 124] =     3005
+Memory[ 125] =     3900
+Memory[ 130] =        3
+Memory[ 134] =     4000
+Memory[ 135] =     4900
+Memory[ 140] =        4
+Memory[ 144] =     5000
+Memory[ 145] =     5900
+Memory[ 150] =        5
+Memory[ 154] =     6000
+Memory[ 155] =     6900
+Memory[ 160] =        6
+Memory[ 164] =     7000
+Memory[ 165] =     7900
+Memory[ 170] =        7
+Memory[ 174] =     8000
+Memory[ 175] =     8900
+Memory[ 180] =        8
+Memory[ 184] =     9000
+Memory[ 185] =     9900
+Memory[ 190] =        9
+Memory[ 194] =    10000
+Memory[ 195] =    10900
+Memory[ 888] =      888
+Memory[ 999] =      999
+Memory[1020] =       10
+Memory[1021] =        6
+Memory[1022] =       12
+Memory[1023] =       25
+Memory[1024] =       37
+Memory[1025] =       41
+Memory[1026] =       55
+Memory[1027] =       64
+Memory[1028] =       73
+Memory[1029] =       89
+Memory[1030] =       91
+Memory[1050] =        6
+Memory[1051] =       12
+Memory[1052] =        6
+Memory[1054] =        1
+Memory[1056] =     1021
+Memory[1057] =     1022
+Memory[1800] =     9999
+Memory[1801] =     8888
+Memory[2020] =       10
+Memory[2021] =       37
+Memory[2022] =       64
+Memory[2023] =       25
+Memory[2024] =       89
+Memory[2025] =       12
+Memory[2026] =       37
+Memory[2027] =       91
+Memory[2028] =        6
+Memory[2029] =       55
+Memory[2030] =       73
+Memory[2031] =       41
+Memory[2040] =        4
+Memory[2050] =       37
+Memory[2051] =        1
+Memory[2800] =     7777
+Memory[2801] =     5555
+Memory[3020] =        9
+Memory[3021] =       10
+Memory[3050] =        9
+Memory[3051] =        1
+Memory[3800] =     6666
+Memory[3801] =     4444
+Memory[3802] =     1111
+Memory[4800] =     4001
+Memory[5800] =     5001
+Memory[6800] =     6001
+Memory[7800] =     7001
+Memory[8800] =     8001
+Memory[9800] =     9001
+Memory[10800] =    10001
+===============================================
+=== CPU Statistics ===
+Instructions executed: 1135
+Stack pointer: 1900
+Final PC: 1061
+Kernel mode: Yes
+======================
