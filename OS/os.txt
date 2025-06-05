@@ -166,7 +166,7 @@ Begin Data Section
 
 # Thread 0 stack space: 1900-1999 (100 words for stack)
 
-# ====== THREAD 1 DATA (2000-2999) - REAL LINEAR SEARCH (Starting at address 2000) ======
+# ====== THREAD 1 DATA (2000-2999) - LINEAR SEARCH (Starting at address 2000) ======
 # Thread 1 data and variables - ALL within 2000-2999 range
 2020 10   # N = number of elements
 2021 37   # Search key (looking for 37 - should be at index 4)
@@ -274,7 +274,7 @@ Begin Instruction Section
 8 HLT
 9 HLT
 
-# ==== THREAD 0: LOOP-BASED BUBBLE SORT (Starting at address 1000) ====
+# ==== THREAD 0: BUBBLE SORT (Starting at address 1000) ====
 1000 SYSCALL PRN 1800   # Thread 0 started marker
 1001 SYSCALL PRN 1020   # Print N (10)
 
@@ -366,7 +366,7 @@ Begin Instruction Section
 1060 SYSCALL YIELD      # Final YIELD
 1061 SYSCALL HLT        # Thread 0 termination
 
-# ==== THREAD 1: REAL LINEAR SEARCH (Starting at address 2000) ====
+# ==== THREAD 1: LINEAR SEARCH (Starting at address 2000) ====
 2000 SYSCALL PRN 2800   # Thread 1 started marker
 2001 SYSCALL PRN 2020   # Print N (10)
 2002 SYSCALL PRN 2021   # Print search key (37)
@@ -384,7 +384,7 @@ Begin Instruction Section
 2012 SYSCALL PRN 2031   # Print array[9]
 2013 SYSCALL YIELD      # YIELD after printing
 
-# REAL LINEAR SEARCH ALGORITHM
+# LINEAR SEARCH ALGORITHM
 2014 SET -1 2040        # result = -1 (not found)
 2015 SET 0 2053         # i = 0 (loop counter)
 
